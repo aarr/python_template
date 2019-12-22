@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>パッケージ &#8212; python_template  ドキュメント</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>パッケージ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<dl>
+<dt>構成</dt><dd><div class="line-block">
+<div class="line">複数のモジュールを集約したディレクトリのことをパッケージと呼ぶ</div>
+<div class="line">モジュール＝ファイル、パッケージ＝ディレクトリ</div>
+<div class="line">パッケージには必ず「__init__,py」が必要になる</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packageName
+|---packageName          &lt;- パッケージのディレクトリ。ディレクトリ名＝パッケージ名
+|   |--- __init__.py     &lt;- これがないとパッケージと呼ぶことはできない
+|   |--- hoge.py
+|   |      ┗--- funcA(n)
+|   ┗--- fuga.py
+|          ┗--- funcB(n)
+</pre></div>
+</div>
+<dl>
+<dt>インポート</dt><dd><div class="line-block">
+<div class="line">パッケージ名までのインポートは、そのパッケージ（ディレクトリ）の「__init__.py」を読み込むことになる</div>
+<div class="line">仮に「__init__.py」に何も記載されていない場合、インポートしても何も取り込まれない。</div>
+<div class="line">モジュール名までインポートする場合、そのモジュール内の関数を読みこむことになる。</div>
+</div>
+<div class="line-block">
+<div class="line">下記のように「__init__.py」を実装することで、パッケージをインポートするだけでパッケージ内の</div>
+<div class="line">モジュールをインポートできる</div>
+<div class="line">下記の実装は <strong>相対インポート</strong> という。</div>
+</div>
+</dd>
+</dl>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">__init__.py</span><a class="headerlink" href="#id3" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">hoge</span>
+ <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">fuga</span>
+</pre></div>
+</div>
+</div>
+<dl>
+<dt>モジュール検索パス</dt><dd><div class="line-block">
+<div class="line">Pythonではモジュールを検索する際に下記の順序で検索を行う。</div>
+</div>
+<ol class="arabic simple">
+<li><p>ビルドインモジュール（Pythonに最初から組み込まれているモジュール）</p></li>
+<li><p>Pythonコマンドに渡した渡したファイルのある直下のディレクトリ直下</p></li>
+</ol>
+<p>下記の構成で、python main.pyと実行した際に、Pythonもジュールを検索しにいく場所は
+トップのpackageName以下である。そのため、どのソースにimport hogeと記載しても
+hoge.pyを見つけることはできない。
+相対インポートの場合、それを解決することが可能。</p>
+</dd>
+</dl>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packageName
+|---packageName
+|   |--- __init__.py
+|   |--- hoge.py
+|   |      ┗--- funcA(n)
+|   ┗--- fuga.py
+|          ┗--- funcB(n)
+|--- main.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h1>その他<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="sphinx-restructuredtext">
+<h2>sphinx(reStructuredText)<a class="headerlink" href="#sphinx-restructuredtext" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><p>install</p>
+<ul class="simple">
+<li><p>sphinxのinstall</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3 install sphinx
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>sphinx-quickstartのinstall確認</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>which sphinx-quickstart
+sphinx-quickstart --version
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ドキュメント作成</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphinx-quickstart documentName
+<span class="c1"># sphinx-quickstart docs</span>
+<span class="c1"># これでdocsディレクトリが作成され、その中にrstファイルからhtmlを作成する為のスクリプト等が生成される</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>rstファイル-&gt;html生成</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line">docsフォルダにて実行（index.rstを編集）</div>
+</div>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make html
+<span class="c1"># html以外も生成可能。</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">python_template</a></h1>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, arai-r.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
