@@ -7,7 +7,7 @@
 # 小文字始まり。スネークケース（hoge_fuga）
 num = 10
 string = "10"
-sTring = "11"
+sTring : string = "11" # 明示的に型宣言をしたい場合
 null = None
 
 # 型変換
@@ -77,7 +77,7 @@ for i in range(100, 130, 10) :
     print("for count:" + str(i))
 
 # import
-# import moduleName1, moduleName2, moduleName3
+# import moduleName1, moduleName2, moduleName
 print("＞import---------------")
 import random
 print("ランダム値：" + str(random.randint(1, 10)))
