@@ -20,7 +20,7 @@ log("＞型変換---------------")
 log(str(num))        # 文字列変換
 log(int(sTring))     # 整数変換
 log(float(string))   # 浮動小数点数に変換
-indent()
+log_add_line()
 
 
 # 標準入力からの入力 +++++++++++++++++++++++
@@ -30,7 +30,7 @@ log("＞標準入力---------------")
 log("なにか入力してください。")
 input_str = input()
 log("「" + input_str + "」" + str(len(input_str)) + "文字入力されました。")
-indent()
+log_add_line()
 
 
 # Bool演算子／not演算子 +++++++++++++++++++++++
@@ -57,7 +57,7 @@ elif 1 :
     log("1")
 else :
     log("other")
-indent()
+log_add_line()
 
 
 # ループ文 +++++++++++++++++++++++
@@ -78,7 +78,7 @@ while count <= 100 :
     count = count + 1
 log("SUM", sum_all)
 log("ODD SUM", sum_odd)
-indent(1)
+log_add_line(1)
 
 log("＞ループ文；for---------------")
 # range()で繰り替えしを実行。
@@ -94,7 +94,7 @@ for i in range(100, 130, 10) :
 dict_for_sample = {'hoge' : '10', 'fuga' : '20', 'fage' : '30'}
 for key  in dict_for_sample.keys() :
     log('DICT CONTENT', 'KEY:' + key + ', VALUE:' + dict_for_sample[key])
-indent()
+log_add_line()
 
 
 # import +++++++++++++++++++++++
@@ -102,27 +102,27 @@ indent()
 log("＞import---------------")
 import random
 log("RANDOM", random.randint(1, 10))
-indent(1)
+log_add_line(1)
 
 # from moduleName import functionName(*指定可能)
 # moduleNameを省略して呼び出すことが可能。module名が記載されている方がわかりやすいのでimport飲みの方がよい
 log("＞from import---------------")
 from random import *
 log("RANDOM", randint(1, 10))
-indent()
+log_add_line()
 
 
 # コンテナ型  +++++++++++++++++++++++
 import container
 
-
 # 関数  +++++++++++++++++++++++
 import function 
-
 
 # 文字列操作  +++++++++++++++++++++++
 import str_operation
 
+# 正規表現  +++++++++++++++++++++++
+import regex
 
 # プログラム終了 +++++++++++++++++++++++
 log("＞プログラム終了---------------")

@@ -25,7 +25,7 @@ def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', 
 
 
 
-def indent(count=2) :
+def log_add_line(count=2) :
     """ 改行指定
     Args:
         count(int, optional) : 指定数文の改行をコンソールログ出力する。

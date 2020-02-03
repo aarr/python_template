@@ -23,7 +23,7 @@ def func_args(arg1, arg2) :
 res = func() # Noneが返却される
 log("IS RESULT NONE", res == None)
 log("RESULT", func_args("AAAA", random.randint(1, 9)))
-indent()
+log_add_line()
 
 
 # キーワード変数
@@ -32,7 +32,7 @@ log("＞関数（キーワード変数）---------------")
 log('OPTIONAL ARG', "Hello", "World")
 log('OPTIONAL ARG', "Hello", "World", sep=",")
 log('OPTIONAL ARG', "Hello", "World", sep=",", end="END\r\n")
-indent(1)
+log_add_line(1)
 
 # スコープ
 log("＞スコープ ---------------")
@@ -54,7 +54,7 @@ func_arg = "Global"
 global_arg = "Global"
 confirm_local_global("local")  # グローバル変数更新を含む
 log("CONFIRM GLOBAL ARG(global_arg)", global_arg)
-indent()
+log_add_line()
 
 # 例外処理
 log("＞例外処理 ---------------")
@@ -78,6 +78,6 @@ def divide(arg1, arg2) :
         log("FINALLY RESULT", result)
 
 log("10 / 3 = ", divide(10, 3))
-indent(1)
+log_add_line(1)
 log("10 / 0 = ", divide(10, 0))   # エアーメッセージが表示され、戻り値としてはNoneとなる
-indent()
+log_add_line()
