@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# container.py
+# 
 #============================
 # コンテナ型
 #============================
@@ -59,7 +62,7 @@ try:
     error_arg1, error_arg2 = list_sample
 except ValueError as exception:
     log("MULTI ARGS ERROR", exception)
-log_add_line(1)
+indent(1)
 
 # ＞リスト提供メソッド
 log("＞リスト提供メソッド ---------------")
@@ -77,7 +80,7 @@ log("LIST SORTED", list_sum)
 log("＞str(シーケンシャル型) ---------------")
 str_like_list = "123"
 log(str_like_list, "ELEM(2):", str_like_list[1], title_sep=' -> ')
-log_add_line(1)
+indent(1)
 
 # ＞タプル
 # 文字列同様イミュータブル（不変）
@@ -93,7 +96,7 @@ def editList(target, index, value) :
 tuple_like_list = (12, "34", None)
 log(tuple_like_list, "ELEM(3):", tuple_like_list[2], title_sep=' -> ')
 editList(tuple_like_list, 0, "X")
-log_add_line(1)
+indent(1)
 
 # ＞リスト、タプルへの型変換
 # タプリを更新したい場合に、リストに変換して操作する
@@ -104,14 +107,14 @@ list_by_tuple = list(tuple_like_list)
 editList(list_by_tuple, 0, "X")
 tuple_by_list = tuple(list_sum)
 editList(tuple_by_list, 0, "X")
-log_add_line()
+indent()
 
 
 # 辞書型（dict） +++++++++++++++++++++++
 log("＞辞書型（dict） ---------------")
 dict_sample = {'key1' : 1, 'key2' : 2, 'key3' : 3}
 log('DICTIONARY', dict_sample)
-log_add_line(1)
+indent(1)
 
 # ＞キー、値が含まれているかの確認
 # 存在しないことの確認であれば、not inを利用すればOK
@@ -120,7 +123,7 @@ isExistsKey = 'key1' in dict_sample.keys()
 log("CONTAINS key1", str(isExistsKey))
 isExistsItem = ('key2', 3) not in dict_sample.items()
 log("CONTAINS key2:3", str(isExistsItem))
-log_add_line(1)
+indent(1)
 
 # ＞dict#get
 # 第１引数でキー、第２引数で存在しない場合の値を指定する
@@ -129,7 +132,7 @@ key1Value = dict_sample.get('key1', 10)
 key4Value = dict_sample.get('key4', 10)
 log('GET not default(key1)', key1Value)
 log('GET default(key4)', key4Value)
-log_add_line(1)
+indent(1)
 
 # ＞dict#setdefault
 # キーが存在しない場合のみ追加を行う
@@ -146,7 +149,7 @@ pprint.pprint(count)
 # 文字列として取得したい場合は、pprint#pformatで取得可能
 log('同じ結果(pprint.pformat):')
 log(pprint.pformat(count))
-log_add_line()
+indent()
 
 
 # COPY（list, tuple, dict） +++++++++++++++++++++++
@@ -164,7 +167,7 @@ log('ORIGINAL LIST', list_copy_target)
 log('COPY LIST', list_copy)
 log('ORIGINAL dict', dict_copy_target)
 log('COPY dict', dict_copy)
-log_add_line(1)
+indent(1)
 
 # ＞リスト/タプルのDEEP COPY
 log("＞DEEP COPY(list, tuple, dict) ---------------")
@@ -177,4 +180,4 @@ list2d_deep_copy[1][0] = 'DEEP COPY'
 log('ORIGINAL LIST', list2d_deep_copy_target)
 log('COPY LIST', list2d_copy)
 log('DEEPCOPY LIST', list2d_deep_copy)
-log_add_line()
+indent()

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# basic.py
+# 
 #============================
 # 基本
 #============================
@@ -111,6 +114,32 @@ from random import *
 log("RANDOM", randint(1, 10))
 log_add_line()
 
+# 例外処理
+log("＞例外処理 ---------------")
+# 割り算（サンプル関数）
+def divide(arg1, arg2) :
+    result = None
+    try:
+        result =  arg1 / arg2 
+    # except 例外 as 変数名: とし、発生した例外を利用することが可能
+    # exceptを続けていくことで、複数のエラーハンドリングが可能
+    except ZeroDivisionError as error:
+        log("ERROR(ZeroDivision)", error)
+    # Exceptionを明示的に定義しないと、全ての例外を補足する。
+    except:
+        log("ERROR", error)
+    # 例外が発生しなかった場合の処理を記述可能
+    else:
+        return result
+    # 必ず実行する
+    finally:
+        log("FINALLY RESULT", result)
+
+log("10 / 3 = ", divide(10, 3))
+log_add_line(1)
+log("10 / 0 = ", divide(10, 0))   # エアーメッセージが表示され、戻り値としてはNoneとなる
+log_add_line()
+
 
 # コンテナ型  +++++++++++++++++++++++
 import container
@@ -123,6 +152,9 @@ import str_operation
 
 # 正規表現  +++++++++++++++++++++++
 import regex
+
+# ファイル操作  +++++++++++++++++++++++
+import file 
 
 # プログラム終了 +++++++++++++++++++++++
 log("＞プログラム終了---------------")

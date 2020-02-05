@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# console.py
+# 
+
+#
 def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', end='\n'):
     """ コンソールログ出力
     Args:
