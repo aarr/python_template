@@ -2,7 +2,11 @@
 # console.py
 # 
 
-#
+"""Console Logger
+
+コンソールにログ出力する
+"""
+
 def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', end='\n'):
     """ コンソールログ出力
     Args:
