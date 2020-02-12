@@ -156,7 +156,7 @@ import str_operation
 import regex
 
 # ファイル操作  +++++++++++++++++++++++
-import file 
+import file_operation 
 
 # プログラム終了 +++++++++++++++++++++++
 log("＞プログラム終了---------------")
