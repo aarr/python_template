@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # file.py
-#
 
 """ ファイル
 ファイル操作サンプル集
@@ -26,6 +25,7 @@ home_dir = os.path.expanduser('~')
 log('HOME DIR', home_dir)
 log_add_line(1)
 # 場所移動
+dir_script = os.path.abspath(__file__)
 os.chdir(home_dir)
 log('CHANGE DIRECTORY -> ' + home_dir) 
 log('CURRENT DIR', os.getcwd())
@@ -183,12 +183,34 @@ log(' - write(a)')
 writeFile(file_path_write_test, 'a', 'write file a mode\nadd line\nadd line\n')
 log_add_line(1)
 
-# shelve（シェルフ：棚）
+
+# shelve（シェルフ：棚） +++++++++++++++++++++++
 # バイナリファイルとして一時的に保存が可能
 log(' - shelve')
 import shelve
 saveShelve('condition', {'key1' : 1, 'key2' : 10})
 condition = getShelve('condition')
 log('SHELVE', condition)
+log_add_line()
+
+
+# pprint.pformat +++++++++++++++++++++++
+# Pythonでそのまま利用できる形でファイル保存が可能
+log(' - pprint.pformat -> file')
+import pprint
+sample_data = [{'key1' : 'value1'}, {'key2' : 'value2', 'key3' : 'value3'}]
+# 後にimportするため、change directoryする前のスクリプト実行ディレクトリに配置する
+content_formated = 'sample_data_formatted = ' + pprint.pformat(sample_data) + ';\n'
+log('PPRINT.PFORMAT', content_formated)
+# このファイルを後ほどimportする
+filepath_format_test = os.path.dirname(dir_script) + '/pprintTest.py'
+writeFile(filepath_format_test, 'w', content_formated)
+log('import pprint.pformat file')
+import pprintTest
+sample_data_formatted = pprintTest.sample_data_formatted
+log('AFTER IMPORT(ALL)', sample_data_formatted, title_space=20)
+log('AFTER IMPORT(0)', sample_data_formatted[0], title_space=20)
+log('AFTER IMPORT(0)', sample_data_formatted[1], title_space=20)
+log_add_line()
 
 
