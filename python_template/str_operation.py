@@ -65,6 +65,9 @@ string_strip = 'hoge 123 deackau 83dk egoh'
 log('STRIP', string_strip.strip('ho'))
 log('RSTRIP', string_strip.rstrip('hoge'))
 log('LSTRIP', string_strip.lstrip('hoge'))
+# format
+string_format = '{0} is {1}'
+log('FORMAT', string_format.format('123', 'number'))
 # クリップボード
 import pyperclip
 pyperclip.copy('CLIPBOARD COPY')
