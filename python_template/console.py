@@ -4,8 +4,9 @@
 """Console Logger
 コンソールにログ出力する
 """
-import logging
+import logging, os
 logging.basicConfig(
+    filename=  os.path.join(os.path.dirname(__file__), 'log', 'application.log'),
     level=logging.DEBUG,
     format= '%(asctime)s[%(levelname)s] %(message)s'
 )
@@ -26,6 +27,11 @@ def error(message):
     '''errorLog
     '''
     logging.error(message)
+
+def disableLogging(level=logging.CRITICAL):
+    '''ログの無効化
+    '''
+    logging.disable(level)
 
 
 def format_message(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' '):
