@@ -1,11 +1,59 @@
 #!/usr/bin/env python3
 # console.py
 # 
-
 """Console Logger
-
 コンソールにログ出力する
 """
+import logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format= '%(asctime)s[%(levelname)s] %(message)s'
+)
+
+def debug(message):
+    '''debugLog
+    '''
+    logging.debug(message)
+
+
+def warn(message):
+    '''warningLog
+    '''
+    logging.warn(message)
+
+
+def error(message):
+    '''errorLog
+    '''
+    logging.error(message)
+
+
+def format_message(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' '):
+    """ メッセージフォーマット
+    Args:
+        title(str) : タイトル。指定が必須
+        *messages(tuple, optional) : メッセージ。未指定の場合、titleのみ表示する
+        title_sep(str, optional) : titleと*messagesの間のセパレータを指定可能
+        title_space(int, optional) : titleから*messagesまでの空白の数
+        sep(str, optional) : *messagesを文字列にする際のセパレータ
+    Returns:
+        str : フォーマット済み文字列
+
+    Examples:
+    >>> console.format_message('タイトル', '表示内容１', '表示内容２', title_space=10, title_sep=' | ', sep=' ')
+    タイトル       | 表示内容１ 表示内容２
+
+    """
+    _message = None
+    _message_length = len(messages)
+    if _message_length == 1:
+        _message = str(messages[0])
+    elif _message_length > 1:
+        # mapにてmessagesの中身をすべて文字列にする
+        _message = sep.join(map(str, messages))
+    _message = str(title).ljust(title_space, spacer) + title_sep + str(_message) if (_message != None) else str(title)
+    return _message
+
 
 def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', end='\n'):
     """ コンソールログ出力
@@ -22,16 +70,10 @@ def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', 
     タイトル       | 表示内容１ 表示内容２
 
     """
-    _message = None
-    _message_length = len(messages)
-    if _message_length == 1:
-        _message = str(messages[0])
-    elif _message_length > 1:
-        # mapにてmessagesの中身をすべて文字列にする
-        _message = sep.join(map(str, messages))
-    _message = str(title).ljust(title_space, spacer) + title_sep + str(_message) if (_message != None) else str(title)
-    print(_message, end=end)
-
+    # *messagesで、format_messageにわたすことで、tupleを展開して渡すことが可能
+    # messagesで渡すとtupleの入れ子になる。
+    #print(format_message(title, *messages, spacer=spacer, title_space=title_space, title_sep=title_sep, sep=sep), end=end)
+    debug(format_message(title, *messages, spacer=spacer, title_space=title_space, title_sep=title_sep, sep=sep))
 
 
 def log_add_line(count=2) :
@@ -41,7 +83,7 @@ def log_add_line(count=2) :
     """
     indentStr = '' 
     # printで通常１つ改行が含まれるため、-１する
-    for i in range(count - 1) :
-        indentStr = indentStr + '\n'
-    print(indentStr)
-
+    for i in range(count) :
+        # indentStr = indentStr + '\n'
+        debug(indentStr)
+    #print(indentStr)

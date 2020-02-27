@@ -119,6 +119,7 @@ log_add_line()
 # 例外処理
 log("＞例外処理 ---------------")
 # 割り算（サンプル関数）
+import traceback
 def divide(arg1, arg2) :
     result = None
     try:
@@ -127,6 +128,9 @@ def divide(arg1, arg2) :
     # exceptを続けていくことで、複数のエラーハンドリングが可能
     except ZeroDivisionError as error:
         log("ERROR(ZeroDivision)", error)
+        # stacktraceを出力
+        # Exceptionは握りつぶして、stacktraceだけをログ出力する際に利用
+        log(traceback.format_exc())
     # Exceptionを明示的に定義しないと、全ての例外を補足する。
     except:
         log("ERROR", error)
