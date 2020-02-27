@@ -5,8 +5,16 @@
 コンソールにログ出力する
 """
 import logging, os
+log_dir = os.path.join(os.path.dirname(__file__), 'log')
+try:
+    os.makedirs(log_dir)
+except FileExistsError as error:
+    print('log directory is exists : {0}'.format(log_dir))
+else:
+    print('make log directory : {0}'.format(log_dir))
+
 logging.basicConfig(
-    filename=  os.path.join(os.path.dirname(__file__), 'log', 'application.log'),
+    filename=os.path.join(log_dir, 'applicationl.log'),
     level=logging.DEBUG,
     format= '%(asctime)s[%(levelname)s] %(message)s'
 )

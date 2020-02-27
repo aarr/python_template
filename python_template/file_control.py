@@ -14,7 +14,7 @@ log('#============================')
 import shutil ,os
 
 home_dir = os.path.expanduser('~')
-base_work_dir = os.path.join(home_dir, 'python_work')
+base_work_dir = os.path.join(home_dir, 'work_python')
 work_dir = os.path.join(base_work_dir, 'file_control')
 # 一度workディレクトリを削除
 file_operation.remove(work_dir)

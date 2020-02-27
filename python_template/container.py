@@ -148,7 +148,7 @@ for char in numStr:
 log('SET DEFAULT(文字カウント)(pprint.pprint):')
 # pprintを利用すると、内容をソートして表示することが可能
 import pprint
-pprint.pprint(count)
+# pprint.pprint(count) # 標準出力に表示
 # 文字列として取得したい場合は、pprint#pformatで取得可能
 log('同じ結果(pprint.pformat):')
 log(pprint.pformat(count))

@@ -103,6 +103,18 @@ def writeFile(file_path, mode, contennt=''):
             # 書き込んだ内容表示
             readlineFile(file_path)
 
+def makeFile(file_path, mode='w'):
+    '''ファイル作成
+    '''
+    file = None
+    try:
+        file = open(file_path, mode)
+    except FileExistsError as ex:
+        log('MAKEFILE', 'file exists : {0}'.format(file_path))
+    except Exception as ex:
+        log('ERROR', ex)
+    return file;
+
 def saveShelve(key, value):
     shelve_file = shelve.open('temp_data')
     shelve_file[key] = value
@@ -149,7 +161,7 @@ def main():
     # os.mkdirも新規ディレクトリ作成可能だが、既存ディレクトリに対しての追加しかできない。
     # 中間ディレクトリ毎一括で作成するにはos.makedirsを使うのがよい
     log(' - ディレクトリ作成')
-    work_dir = os.path.join(home_dir, 'python_work')
+    work_dir = os.path.join(home_dir, 'work_python')
     # 一度ワークディレクトリ削除
     remove(work_dir)
     worK_dir_test_makedir = os.path.join(work_dir, 'makedirs_test')
@@ -187,27 +199,29 @@ def main():
 
     # ファイル読込／書込 +++++++++++++++++++++++
     log('>ファイル読込／書き込み')
-    file_path_read_test = work_dir + '/file_test/TEST_READ.txt'
-    file_path_write_test = work_dir + '/file_test/TEST_WRITE.txt'
+    file_path_test_dir = os.path.join(work_dir, 'file_test')
+    makedir(file_path_test_dir)
+    file_path_test = os.path.join(file_path_test_dir, 'TEST.txt')
 
-
-    # ファイル読込
-    log(' - read')
-    readFile(file_path_read_test)
-    log(' - readline')
-    readlineFile(file_path_read_test)
-    log(' - readlines')
-    readlinesFile(file_path_read_test)
-    log_add_line(1)
 
     # ファイル書込
     # w：書込（新規）
     # a：書込（追記）
     log(' - write(w)')
-    writeFile(file_path_write_test, 'w', 'write file w mode\nnew line\n')
+    writeFile(file_path_test, 'w', 'write file w mode\nnew line\n')
     log_add_line(1)
     log(' - write(a)')
-    writeFile(file_path_write_test, 'a', 'write file a mode\nadd line\nadd line\n')
+    writeFile(file_path_test, 'a', 'write file a mode\nadd line\nadd line\n')
+    log_add_line(1)
+
+
+    # ファイル読込
+    log(' - read')
+    readFile(file_path_test)
+    log(' - readline')
+    readlineFile(file_path_test)
+    log(' - readlines')
+    readlinesFile(file_path_test)
     log_add_line(1)
 
 
