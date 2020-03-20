@@ -27,6 +27,15 @@ log(int(sTring))     # 整数変換
 log(float(string))   # 浮動小数点数に変換
 log_add_line()
 
+# 型判定 +++++++++++++++++++++++
+log('＞型、インスタンス判定')
+log('TYPE', int == type(100))
+# いずれかに一致するか
+log('TYPE(MULTI)', type(100) in (str, float))
+
+log('IS INSTANCE', isinstance('TEST', str))
+# いずれかに一致するか
+log('IS INSTANCE(MULTI)', isinstance(100, (str, float)))
 
 # 標準入力からの入力 +++++++++++++++++++++++
 # 複数の入力を受け付けるのであれば、inputを繰り返し実装するのではなく
@@ -166,7 +175,7 @@ file_operation.main()
 import file_control
 
 # ファイル操作  +++++++++++++++++++++++
-import web_scraping
+#import web_scraping
 
 
 # プログラム終了 +++++++++++++++++++++++

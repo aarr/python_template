@@ -75,8 +75,24 @@ list_sum.remove("1")            # delは要素番号を指定して削除、remo
 log("WHAT NUM(2)",  str(list_sum.index("2")))
 log("操作後リスト", list_sum)
 log("WHAT NUM(8 :5 - 10)",  str(list_sum.index("8", 5, 10)))
+log('INDEX(7)', list_sum.index('7')) # 何番目の要素にあるか検索
+
 list_sum.sort()
 log("LIST SORTED", list_sum)
+
+list_sum.sort(reverse=True)
+log("LIST SORTED（REVERSE）", list_sum)
+
+# 引数でソートロジックを指定可能（数値ソートにした）
+list_sum.sort(key=lambda elem : int(elem))
+log("LIST SORTED（KEY）", list_sum)
+
+# sortedは新しいリストを生成
+# list#sortと同じように、key指定にてソートロジックを指定可能
+new_list_sum = sorted(list_sum)
+log('SORTED', new_list_sum)
+log_add_line(1)
+
 
 # ＞文字列
 # リストはミュータブルだが、文字列はイミュータブル（不変）
@@ -124,17 +140,33 @@ log_add_line(1)
 log(' - dict 存在確認')
 isExistsKey = 'key1' in dict_sample.keys()
 log("CONTAINS key1", str(isExistsKey))
-isExistsItem = ('key2', 3) not in dict_sample.items()
-log("CONTAINS key2:3", str(isExistsItem))
+is_exists_item = ('key2', 3) not in dict_sample.items()
+log("CONTAINS key2:3", str(is_exists_item))
 log_add_line(1)
 
 # ＞dict#get
 # 第１引数でキー、第２引数で存在しない場合の値を指定する
 log(' - dict#get')
-key1Value = dict_sample.get('key1', 10)
-key4Value = dict_sample.get('key4', 10)
-log('GET not default(key1)', key1Value)
-log('GET default(key4)', key4Value)
+key1_value = dict_sample['key1']
+key1_value_with_default = dict_sample.get('key1', 10)
+key4_value_with_default = dict_sample.get('key4', 10)
+log('GET key1', key1_value)
+log('GET not default(key1)', key1_value_with_default)
+log('GET default(key4)', key4_value_with_default)
+log_add_line(1)
+
+# ＞要素追加
+log(' - dict add element')
+dict_sample['addkey'] = 100
+log('ADD ELEMENT',  dict_sample)
+log_add_line(1)
+
+# ＞dict#update
+log(' - dict#update')
+dict_update = {'key1' : 10, 'key10' : 4}
+# dict_sampleが更新される
+dict_sample.update(dict_update)
+log('UPDATED DICTONAIRY', dict_sample)
 log_add_line(1)
 
 # ＞dict#setdefault
@@ -153,6 +185,7 @@ import pprint
 log('同じ結果(pprint.pformat):')
 log(pprint.pformat(count))
 log_add_line()
+
 
 
 # COPY（list, tuple, dict） +++++++++++++++++++++++

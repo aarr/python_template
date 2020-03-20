@@ -34,7 +34,7 @@ def remove(path):
     else:
         log('COMPLETE REMOVE : {0}'.format(path))
 
-def readFile(file_path, isDebug=True):
+def read_file(file_path, isDebug=True):
     '''ファイル読込
     '''
     # openでFileオブジェクト取得
@@ -52,13 +52,12 @@ def readFile(file_path, isDebug=True):
         if file != None:
             file.close()
 
-def readlineFile(file_path, isDebug=True):
+def readline_file(file_path, isDebug=True):
     '''ファイル１行毎読込
     '''
-    file = None
-    try:
-        log('READ', file_path)
-        file = open(file_path)
+    log('READ', file_path)
+    # withでopenすることでclose漏れがなくなる
+    with open(file_path) as file:
         line = file.readline()
         lineCount = 0
         while line:
@@ -66,62 +65,41 @@ def readlineFile(file_path, isDebug=True):
             if isDebug:
                 log('LINE({0})'.format(str(lineCount)), remove_line_separator(line))
             line = file.readline()
-    except Exception as ex:
-        log('ERROR', ex)
-    finally:
-        if file != None:
-            file.close()
 
-def readlinesFile(file_path, isDebug=True):
+def readlines_file(file_path, isDebug=True):
     '''ファイル全行読込
     '''
-    file = None
-    try:
-        file = open(file_path)
+    with open(file_path) as file:
         lines = file.readlines()
         if isDebug:
             log('READ LINES', lines)
-    except Exception as ex:
-        log('ERROR', ex)
-    finally:
-        if file != None:
-            file.close()
-
-def writeFile(file_path, mode, contennt=''):
+    
+def write_file(file_path, mode, contennt=''):
     ''' ファイル書込
     '''
-    file = None
-    try:
-        file = open(file_path, mode)
+    with open(file_path, mode) as file:
         writeNum = file.write(contennt)
         log('WRITE FILE', 'Write Character', writeNum)
-    except Exception as ex:
-        log('ERROR', ex)
-    finally:
-        if file != None:
-            file.close()
-            # 書き込んだ内容表示
-            readlineFile(file_path)
+        # 書き込んだ内容表示
+        readline_file(file_path)
 
-def makeFile(file_path, mode='w'):
+def make_file(file_path, mode='w'):
     '''ファイル作成
     '''
     file = None
     try:
         file = open(file_path, mode)
-    except FileExistsError as ex:
-        log('MAKEFILE', 'file exists : {0}'.format(file_path))
     except Exception as ex:
         log('ERROR', ex)
     return file;
 
-def saveShelve(key, value):
+def save_shelve(key, value):
     shelve_file = shelve.open('temp_data')
     shelve_file[key] = value
     shelve_file.close()
     log('save shelve')
 
-def getShelve(key):
+def get_shelve(key):
     shelve_file = shelve.open('temp_data')
     value = shelve_file[key]
     shelve_file.close()
@@ -208,20 +186,20 @@ def main():
     # w：書込（新規）
     # a：書込（追記）
     log(' - write(w)')
-    writeFile(file_path_test, 'w', 'write file w mode\nnew line\n')
+    write_file(file_path_test, 'w', 'write file w mode\nnew line\n')
     log_add_line(1)
     log(' - write(a)')
-    writeFile(file_path_test, 'a', 'write file a mode\nadd line\nadd line\n')
+    write_file(file_path_test, 'a', 'write file a mode\nadd line\nadd line\n')
     log_add_line(1)
 
 
     # ファイル読込
     log(' - read')
-    readFile(file_path_test)
+    read_file(file_path_test)
     log(' - readline')
-    readlineFile(file_path_test)
+    readline_file(file_path_test)
     log(' - readlines')
-    readlinesFile(file_path_test)
+    readlines_file(file_path_test)
     log_add_line(1)
 
 
@@ -229,8 +207,8 @@ def main():
     # バイナリファイルとして一時的に保存が可能
     # shelveパッケージをインポートして利用する
     log(' - shelve')
-    saveShelve('condition', {'key1' : 1, 'key2' : 10})
-    condition = getShelve('condition')
+    save_shelve('condition', {'key1' : 1, 'key2' : 10})
+    condition = get_shelve('condition')
     log('SHELVE', condition)
     log_add_line()
 
@@ -245,7 +223,7 @@ def main():
     log('PPRINT.PFORMAT', content_formated)
     # このファイルを後ほどimportする
     filepath_format_test = os.path.dirname(dir_script) + '/pprintTest.py'
-    writeFile(filepath_format_test, 'w', content_formated)
+    write_file(filepath_format_test, 'w', content_formated)
     log('import pprint.pformat file')
     import pprintTest
     sample_data_formatted = pprintTest.sample_data_formatted

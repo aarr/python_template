@@ -14,7 +14,8 @@ else:
     print('make log directory : {0}'.format(log_dir))
 
 logging.basicConfig(
-    filename=os.path.join(log_dir, 'applicationl.log'),
+    # ファイル出力の場合コメントアウト解除
+    #filename=os.path.join(log_dir, 'applicationl.log'),
     level=logging.DEBUG,
     format= '%(asctime)s[%(levelname)s] %(message)s'
 )
