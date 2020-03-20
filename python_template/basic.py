@@ -7,6 +7,7 @@ Python基本実装集
 """
 
 from console import *
+import datetime
 log('+++++++++++++++++++ START +++++++++++++++++++')
 log('#============================')
 log('# 基本')
@@ -73,6 +74,12 @@ else :
     log("other")
 log_add_line()
 
+# 日付
+log("＞日付---------------")
+now = datetime.datetime.now()
+formatted_now = now.strftime('%Y%m%d_%H%M%S')
+log('NOW', formatted_now)
+log_add_line(1)
 
 # ループ文 +++++++++++++++++++++++
 # continue/breakの利用可能
@@ -175,7 +182,7 @@ file_operation.main()
 import file_control
 
 # ファイル操作  +++++++++++++++++++++++
-import web_scraping
+# import web_scraping
 
 
 # プログラム終了 +++++++++++++++++++++++
