@@ -1,3 +1,6 @@
-python_template
+python_template/*.config
+python_template/pprintTest.py
+python_template/test.*
+python_template/temp_data
 python_template/log/
 python_template/__pycache__/
