@@ -93,14 +93,14 @@ def make_file(file_path, mode='w'):
         log('ERROR', ex)
     return file;
 
-def save_shelve(key, value):
-    shelve_file = shelve.open('temp_data')
+def save_shelve(key, value, file_path='temp_data'):
+    shelve_file = shelve.open(file_path)
     shelve_file[key] = value
     shelve_file.close()
     log('save shelve')
 
-def get_shelve(key):
-    shelve_file = shelve.open('temp_data')
+def get_shelve(key, file_path='temp_data'):
+    shelve_file = shelve.open(file_path)
     value = shelve_file[key]
     shelve_file.close()
     log('get shelve')

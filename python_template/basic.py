@@ -175,7 +175,7 @@ file_operation.main()
 import file_control
 
 # ファイル操作  +++++++++++++++++++++++
-#import web_scraping
+import web_scraping
 
 
 # プログラム終了 +++++++++++++++++++++++
