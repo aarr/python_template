@@ -4,14 +4,18 @@
 
 """ Pythonサンプル
 Python基本実装集
+引数にskipとつける事で、その他スクリプトの実行をスキップする
 """
 
 from console import *
-import datetime
+import sys, datetime, time
 log('+++++++++++++++++++ START +++++++++++++++++++')
 log('#============================')
 log('# 基本')
 log('#============================')
+skip_other_script = True if len(sys.argv) == 2 and sys.argv[1] == 'skip' else False
+log('SKIP OTHER SCRIPT', skip_other_script)
+
 # 変数
 # 英数＋アンダーバーのみ。数字から始まらない。
 # 大文字、小文字の区別あり。
@@ -76,10 +80,51 @@ log_add_line()
 
 # 日付
 log("＞日付---------------")
+log(' -日時')
+# 現在時刻の取得
 now = datetime.datetime.now()
 formatted_now = now.strftime('%Y%m%d_%H%M%S')
 log('NOW', formatted_now)
+log('NOW FORMAT', '{0}年{1}月{2}日 {3}時{4}分{5}秒'.format(now.year, now.month, now.day, now.hour, now.minute, now.second))
+# datetime.datetime.now()と同じ
+now2 = datetime.datetime.fromtimestamp(time.time())
+log('NOW2', now2.strftime('%Y%m%d_%H%M%S'))
 log_add_line(1)
+# タイムスタンプからの変換
+dt = datetime.datetime.fromtimestamp(1000 * 1000 * 1000)
+log('EPOC FROM 1000 * 1000 * 1000sec', dt)
+log_add_line(1)
+# 指:日時
+any_dt = datetime.datetime(2020, 4, 1, 12, 59, 10)
+log('ANY DATETIME', any_dt.strftime('%Y%m%d_%H%M%S'))
+log('TO STRING FORMAT')
+log(now.strftime('%Y'), '%Y：4桁西暦')
+log(now.strftime('%y'), '%y：西暦下2桁')
+log(now.strftime('%m'), '%m：月')
+log(now.strftime('%B'), '%B：月名')
+log(now.strftime('%b'), '%b：月略名')
+log(now.strftime('%j'), '%j：年初からの日数')
+log(now.strftime('%w'), '%w：曜日')
+log(now.strftime('%A'), '%A：曜日名')
+log(now.strftime('%a'), '%a：曜日略名')
+log(now.strftime('%H'), '%H：時(24時間制)')
+log(now.strftime('%M'), '%M：分')
+log(now.strftime('%S'), '%S：秒')
+log(now.strftime('%p'), '%p：AM/PM')
+log(now.strftime('%%'), '%%：%文字(ESCAPE)')
+log_add_line(1)
+
+# 期間 
+log(' -期間')
+break_span = datetime.timedelta(seconds=10)
+break_time = now + break_span
+log('BREAK SECONDS', break_span)
+# 指定時間まで停止
+log('BREAK START', datetime.datetime.now())
+while datetime.datetime.now() < break_time:
+    time.sleep(1)
+    log('BREAK...')
+log('BREAK END', datetime.datetime.now())
 
 # ループ文 +++++++++++++++++++++++
 # continue/breakの利用可能
@@ -163,26 +208,27 @@ log("10 / 0 = ", divide(10, 0))   # エアーメッセージが表示され、�
 log_add_line()
 
 
-# コンテナ型  +++++++++++++++++++++++
-import container
+if skip_other_script == False:
+    # コンテナ型  +++++++++++++++++++++++
+    import container
 
-# 関数  +++++++++++++++++++++++
-import function 
+    # 関数  +++++++++++++++++++++++
+    import function 
 
-# 文字列操作  +++++++++++++++++++++++
-import str_operation
+    # 文字列操作  +++++++++++++++++++++++
+    import str_operation
 
-# 正規表現  +++++++++++++++++++++++
-import regex
+    # 正規表現  +++++++++++++++++++++++
+    import regex
 
-# ファイル操作  +++++++++++++++++++++++
-import file_operation 
-file_operation.main()
+    # ファイル操作  +++++++++++++++++++++++
+    import file_operation 
+    file_operation.main()
 
-import file_control
+    import file_control
 
-# ファイル操作  +++++++++++++++++++++++
-# import web_scraping
+    # ファイル操作  +++++++++++++++++++++++
+    # import web_scraping
 
 
 # プログラム終了 +++++++++++++++++++++++
