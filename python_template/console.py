@@ -15,27 +15,30 @@ else:
 
 logging.basicConfig(
     # ファイル出力の場合コメントアウト解除
-    #filename=os.path.join(log_dir, 'applicationl.log'),
-    level=logging.DEBUG,
+    filename=os.path.join(log_dir, 'applicationl.log'),
+    # その他のパッケージのログはERROR
+    level=logging.ERROR,
     format= '%(asctime)s[%(levelname)s] %(message)s'
 )
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def debug(message):
     '''debugLog
     '''
-    logging.debug(message)
+    logger.debug(message)
 
 
 def warn(message):
     '''warningLog
     '''
-    logging.warn(message)
+    logger.warn(message)
 
 
 def error(message):
     '''errorLog
     '''
-    logging.error(message)
+    logger.error(message)
 
 def disableLogging(level=logging.CRITICAL):
     '''ログの無効化
