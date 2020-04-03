@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # mail.py
-'''Mailサンプル
+'''Mail送受信サンプル
 '''
 
 from console import *
@@ -24,16 +24,19 @@ def create_message(from_address, to_address, title, message):
 log('-------------------------------')
 log('SEND MAIL START')
 # 接続情報取得
-if os.path.isfile(config_file_name) == False:
-    if len(sys.argv) == 3:
-        # ID,PASSを保存
-        file_operation.save_shelve(config_key, 
-        {   config_key_address : sys.argv[1] 
-            ,config_key_passwd :sys.argv[2] 
-        }, config_file_name)
-    else:
-        log('ERROR', '１度は引数（Mailアドレス、パスワード）を指定して実効してください')
-        sys.exit()
+args = sys.argv;
+if os.path.isfile(config_file_name) == False and len(args) != 3:
+    log('ERROR', '１度は引数（Mailアドレス、パスワード）を指定して実効してください')
+    sys.exit()
+
+if len(args) == 3:
+    # ID,PASSを保存
+    file_operation.save_shelve(config_key, 
+    {   config_key_address : sys.argv[1] 
+        ,config_key_passwd :sys.argv[2] 
+    }, config_file_name)
+else:
+    log('ARGUMENTS ERROR', '引数の個数が正しくありません。送信番号、SID、AUTH_TOKEN、受信番号の４つを指定してください')
 
 smtp_server = 'smtp.gmail.com'
 config = file_operation.get_shelve(config_key, config_file_name)

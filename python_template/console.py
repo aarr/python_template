@@ -15,7 +15,7 @@ else:
 
 logging.basicConfig(
     # ファイル出力の場合コメントアウト解除
-    filename=os.path.join(log_dir, 'applicationl.log'),
+    # filename=os.path.join(log_dir, 'applicationl.log'),
     # その他のパッケージのログはERROR
     level=logging.ERROR,
     format= '%(asctime)s[%(levelname)s] %(message)s'
