@@ -19,7 +19,7 @@ config_key_passwd = 'passwd'
 args = sys.argv;
 log('CURRENT DIR', os.getcwd())
 if os.path.isfile(config_file_name) == False and len(args) != 5:
-    log('ERROR', '１度は引数（Mailアドレス、パスワード）を指定して実効してください')
+    log('ERROR', '１度は引数（送信番号、SID、AUTH_TOKEN、受信番号）を指定して実効してください')
     sys.exit()
 if len(args) == 5:
     config = {
@@ -29,8 +29,9 @@ if len(args) == 5:
         'receive_number' : args[4]
     }
     file_operation.save_shelve(config_key, config, config_file_name)
-else:
+elif os.path.isfile(config_file_name) == False:
     log('ARGUMENTS ERROR', '引数の個数が正しくありません。送信番号、SID、AUTH_TOKEN、受信番号の４つを指定してください')
+    sys.exit()
 
 # SMS送信時に必要なパラメータ
 config = file_operation.get_shelve(config_key, config_file_name)

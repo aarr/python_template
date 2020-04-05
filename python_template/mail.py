@@ -35,8 +35,9 @@ if len(args) == 3:
     {   config_key_address : sys.argv[1] 
         ,config_key_passwd :sys.argv[2] 
     }, config_file_name)
-else:
+elif os.path.isfile(config_file_name) == False:
     log('ARGUMENTS ERROR', '引数の個数が正しくありません。送信番号、SID、AUTH_TOKEN、受信番号の４つを指定してください')
+    sys.exit()
 
 smtp_server = 'smtp.gmail.com'
 config = file_operation.get_shelve(config_key, config_file_name)
