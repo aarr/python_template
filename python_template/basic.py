@@ -9,6 +9,7 @@ Python基本実装集
 
 from console import *
 import sys, datetime, time
+import itertools
 log('+++++++++++++++++++ START +++++++++++++++++++')
 log('#============================')
 log('# 基本')
@@ -34,7 +35,12 @@ log_add_line()
 
 # 型判定 +++++++++++++++++++++++
 log('＞型、インスタンス判定')
-log('TYPE', int == type(100))
+log('TYPE(int)', int == type(100))
+log('TYPE(list)', list == type([1, 2, 3]))
+log('TYPE(dist)', dict == type({'a' : 'b', '1' : '2'}))
+log('TYPE(set)', set == type({1 ,2 ,3}))
+log('TYPE(tuple)', tuple == type((1 ,2 ,3)))
+
 # いずれかに一致するか
 log('TYPE(MULTI)', type(100) in (str, float))
 
@@ -116,7 +122,7 @@ log_add_line(1)
 
 # 期間 
 log(' -期間')
-break_span = datetime.timedelta(seconds=10)
+break_span = datetime.timedelta(seconds=3)
 break_time = now + break_span
 log('BREAK SECONDS', break_span)
 # 指定時間まで停止
@@ -151,10 +157,36 @@ log("＞ループ文；for---------------")
 # 引数は１〜３つまで指定可能。開始、終了、ステップ数
 for i in range(3) :
     log("FOR COUNT", i)
+log_add_line(1)
 for i in range(10, 13) :
     log("FOR COUNT", i)
+log_add_line(1)
 for i in range(100, 130, 10) :
     log("FOR COUNT", i)
+log_add_line(1)
+
+# indexも必要な場合には、enumerateを利用する
+for index, val in enumerate(range(100, 130, 10)):
+    log("FOR COUNT {0}".format(index), val)
+log_add_line(1)
+
+# 逆順でループしたい場合には、reversedを利用する
+for index, val in enumerate(reversed(range(100, 130, 10))):
+    log("FOR(REVERSED) {0}".format(index), val)
+log_add_line(1)
+
+# 複数配列を一度にループしたい場合
+for val1, val2 in zip((1, 2, 3), (10, 20, 30)):
+    log("FOR(ZIP)", 'VALUE1 : {0}, VALUE2 : {1}'.format(val1, val2))
+log_add_line(1)
+
+# ネストループを１階層で記述したい場合
+for val, nest_val in itertools.product(range(3), range(10, 40, 10)):
+    log("FOR(PRODUCT)", 'VALUE : {0}, NEST_VALUE2 : {1}'.format(val, nest_val))
+log_add_line(1)
+
+
+
 # dictを利用したfor文
 # iteratorを３種類選択可能。keys,values,items
 dict_for_sample = {'hoge' : '10', 'fuga' : '20', 'fage' : '30'}

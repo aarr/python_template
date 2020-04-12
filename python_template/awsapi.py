@@ -67,7 +67,7 @@ log('HTTP Request start')
 # 入力チェック
 args = sys.argv;
 if os.path.isfile(config_file_name) == False and len(args) != 3:
-    log('ERROR', '１度は引数（URL、APIきー）を指定して実効してください')
+    log('ERROR', '１度は引数（URL、APIキー）を指定して実効してください')
     sys.exit()
 if len(args) == 3:
     config = {
