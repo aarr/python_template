@@ -5,7 +5,7 @@
 関数サンプル集
 """
 
-from console import *
+from com.console import *
 
 log('#============================')
 log('# 関数')

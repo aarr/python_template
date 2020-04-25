@@ -4,8 +4,14 @@
 '''
 
 import webbrowser, requests, sys, os 
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
 from console import *
-from file_operation import *
+from file_manager import *
 
 log('#============================')
 log('# WEB SCRAPING')

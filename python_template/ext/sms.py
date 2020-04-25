@@ -2,15 +2,23 @@
 # sms.py
 '''SMS送信サンプル
 '''
-from console import *
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
-import sys, os, file_operation
+import sys, os
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
+from console import *
+import file_manager as file_operation
+
 log('#============================')
 log('# SMS')
 log('#============================')
 log('SMS START')
-config_file_name = 'sms.config'
+config_file_name = os.path.join(base_dir, 'config', 'sms.config')
 config_key = 'config'
 config_key_address = 'address'
 config_key_passwd = 'passwd'

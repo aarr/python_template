@@ -6,7 +6,7 @@
 正規表現サンプル集
 """
 
-from console import *
+from com.console import *
 import re
 
 log('#============================')

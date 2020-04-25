@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# file.py
+# file_control.py
 
 """ ファイル
 ファイル管理サンプル集
 """
 
-from console import *
-import file_operation, send2trash
+from com.console import *
+import basic.file_operation as file_operation, send2trash
 
 log('#============================')
 log('# ファイル管理')

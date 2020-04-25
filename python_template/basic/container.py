@@ -6,7 +6,7 @@
 コンテナ型サンプル集
 """
 
-from console import *
+from com.console import *
 
 # 複数のオブジェクトを格納できるデータ構造
 # コンテナ型

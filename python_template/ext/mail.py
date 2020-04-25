@@ -2,15 +2,22 @@
 # mail.py
 '''Mail送受信サンプル
 '''
-
-from console import *
 from email.mime.text import MIMEText
 from email.header import Header
-import sys, smtplib, file_operation
+import sys, os, smtplib
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
+from console import *
+import file_manager as file_operation
+
 log('#============================')
 log('# Mail')
 log('#============================')
-config_file_name = 'mail.config'
+config_file_name = os.path.join(base_dir, 'config', 'mail.config')
 config_key = 'config'
 config_key_address = 'address'
 config_key_passwd = 'passwd'

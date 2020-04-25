@@ -5,112 +5,8 @@
 ファイル操作サンプル集
 """
 
-from console import *
-import os,shelve, shutil
-
-def makedir(path):
-    ''' ディレクトリ作成
-    '''
-    try:
-        os.makedirs(path)
-    except FileExistsError as error:
-        # 既にフォルダが存在する場合はそのまま処理をすすめる
-        log('DO NOT MAKE DIR. ALREADY EXISTS : {0}'.format(path))
-    else:
-        log('COMPLETE MAKE DIR : {0}'.format(path))
-
-def remove(path):
-    '''ファイル/ディレクトリ一括削除
-    '''
-    try:
-        if os.path.isdir(path):
-            shutil.rmtree(path)
-        elif os.path.isfile(path):
-            os.remove(path)
-            # 下記でも同等の挙動
-            #os.unlink(path)
-    except FileNotFoundError as error:
-        log('NOT EXISTS : {0}'.format(path))
-    else:
-        log('COMPLETE REMOVE : {0}'.format(path))
-
-def read_file(file_path, isDebug=True):
-    '''ファイル読込
-    '''
-    # openでFileオブジェクト取得
-    # readで内容読込
-    # closeでファイルを閉じる
-    file = None
-    try:
-        # r指定で読み取り専用として開く
-        file = open(file_path, 'r')
-        content = file.read()
-        log('READ', file_path, content)
-    except Exception as ex:
-        log('ERROR', ex)
-    finally:
-        if file != None:
-            file.close()
-
-def readline_file(file_path, isDebug=True):
-    '''ファイル１行毎読込
-    '''
-    log('READ', file_path)
-    # withでopenすることでclose漏れがなくなる
-    with open(file_path) as file:
-        line = file.readline()
-        lineCount = 0
-        while line:
-            lineCount = lineCount + 1
-            if isDebug:
-                log('LINE({0})'.format(str(lineCount)), remove_line_separator(line))
-            line = file.readline()
-
-def readlines_file(file_path, isDebug=True):
-    '''ファイル全行読込
-    '''
-    with open(file_path) as file:
-        lines = file.readlines()
-        if isDebug:
-            log('READ LINES', lines)
-    
-def write_file(file_path, mode, contennt=''):
-    ''' ファイル書込
-    '''
-    with open(file_path, mode) as file:
-        writeNum = file.write(contennt)
-        log('WRITE FILE', 'Write Character', writeNum)
-        # 書き込んだ内容表示
-        readline_file(file_path)
-
-def make_file(file_path, mode='w'):
-    '''ファイル作成
-    '''
-    file = None
-    try:
-        file = open(file_path, mode)
-    except Exception as ex:
-        log('ERROR', ex)
-    return file;
-
-def save_shelve(key, value, file_path='temp_data'):
-    shelve_file = shelve.open(file_path)
-    shelve_file[key] = value
-    shelve_file.close()
-    log('save shelve')
-
-def get_shelve(key, file_path='temp_data'):
-    shelve_file = shelve.open(file_path)
-    value = shelve_file[key]
-    shelve_file.close()
-    log('get shelve')
-    return value
-
-def remove_line_separator(line):
-    _line = str(line)
-    # 3項演算子
-    return _line.strip('\n').strip('\r') if line != None else line;
-
+from com.console import *
+from com.file_manager import *
 
 def main():
     log('#============================')
@@ -129,10 +25,15 @@ def main():
     log('HOME DIR', home_dir)
     log_add_line(1)
     # 場所移動
+    current_dir = os.getcwd();
     dir_script = os.path.abspath(__file__)
     os.chdir(home_dir)
     log('CHANGE DIRECTORY -> ' + home_dir) 
     log('CURRENT DIR', os.getcwd())
+
+    # ディレクトリを移動するとimportする際のサーチパスが変わってしまう。
+    # そのため、本に戻す
+    os.chdir(current_dir)
 
     # ディレクトリ作成
     # 中間ディレクトリも作成される
@@ -145,7 +46,6 @@ def main():
     worK_dir_test_makedir = os.path.join(work_dir, 'makedirs_test')
     makedir(worK_dir_test_makedir)
     log('WORK DIR', worK_dir_test_makedir)
-    os.chdir(worK_dir_test_makedir)
     log_add_line(1)
 
     log(' - パス判定')
@@ -222,11 +122,12 @@ def main():
     content_formated = 'sample_data_formatted = ' + pprint.pformat(sample_data) + ';\n'
     log('PPRINT.PFORMAT', content_formated)
     # このファイルを後ほどimportする
-    filepath_format_test = os.path.dirname(dir_script) + '/pprintTest.py'
+    filepath_format_test = os.path.dirname(dir_script) + '/pprint_test_data.py'
     write_file(filepath_format_test, 'w', content_formated)
     log('import pprint.pformat file')
-    import pprintTest
-    sample_data_formatted = pprintTest.sample_data_formatted
+    # TODO 関数ないでインポートしたいがエラーとなる。要確認
+    import basic.pprint_test_data as pprint_test_data
+    sample_data_formatted = pprint_test_data.sample_data_formatted
     log('AFTER IMPORT(ALL)', sample_data_formatted, title_space=20)
     log('AFTER IMPORT(0)', sample_data_formatted[0], title_space=20)
     log('AFTER IMPORT(0)', sample_data_formatted[1], title_space=20)

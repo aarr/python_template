@@ -5,11 +5,18 @@ AWS lambdaなどで利用する場合、アクセスキー、シークレット�
 キー情報を環境変数に登録しておくことで、不要とさせる事も可能
 '''
 
+import sys, os, boto3
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
 from console import *
-import os, file_operation, boto3
+import file_manager as file_operation
 
 class AwsConfig():
-    CONFIG_FILE_NAME = 'aws.config'
+    CONFIG_FILE_NAME = os.path.join(base_dir, 'config', 'aws.config')
     CONFIG_KEY = 'config'
     CONFIG_KEY_ACCESS_KEY = 'access_key'
     CONFIG_KEY_SECRET_KEY = 'secret_key'
@@ -18,6 +25,7 @@ class AwsConfig():
     def __init__(self):
         '''Initializer'''
         super().__init__()
+        print('CONFIGFILE:{0}'.format(self.CONFIG_FILE_NAME))
         if os.path.isfile(self.CONFIG_FILE_NAME) == False:
             print("アクセスキーを入力してください。")
             access_key = input()

@@ -12,9 +12,16 @@ from selenium.webdriver.support import expected_conditions as EC
 # Chromeのバージョンと合わせないと行けないため、最新をインストールでは動かない事がある
 # ~=で前方一致的な感じとなる。
 # pip3 install chromedriver-binary~=80.0.3987
+import chromedriver_binary ,time ,re, sys, os, datetime, logging
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
 from performance import Performance
 from console import *
-import chromedriver_binary ,time ,re, sys, datetime, logging, file_operation
+import file_manager as file_operation
 
 pf = Performance()
 log('#============================')
@@ -27,7 +34,7 @@ reserve_button_text = 'このお店を予約する'
 day_of_week_for_display = ['月', '火', '水', '木', '金', '土', '日']
 wait_seconds_for_get_shot_list = 5
 # ID、PASSWORD情報管理ファイル
-id_pass_config = 'omakase.config'
+id_pass_config = os.path.join(base_dir, 'config', 'omakase.config')
 # 予約リクエスト
 target_shop_name = 'はっこく'
 target_num_of_people = 2

@@ -2,8 +2,14 @@
 ''' Excel操作サンプル
 '''
 
-import os, datetime, openpyxl
+import sys, os, datetime, openpyxl
 from openpyxl.styles import Font
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
 from console import *
 log('#============================')
 log('# Excel')

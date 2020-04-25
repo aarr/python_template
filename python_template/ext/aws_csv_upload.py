@@ -2,13 +2,21 @@
 '''CSV入出力サンプル
 '''
 
-from console import *
-import file_operation
+import sys, os, json ,csv, datetime, time
 # ファイル書込
 from io import StringIO
-import sys, os, json ,csv, datetime, time
+
+# 同階層
 # boto3のWrappe
 import aws
+
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
+from console import *
+import file_manager as  file_operation
 
 log('#============================')
 log('# AWSアクセスサンプル')

@@ -11,11 +11,17 @@ API GATEWAY
     lambda側での実装になるが、リダイレクトURLの返却（302）
 '''
 
-from console import *
-import file_operation
 import urllib.request, urllib.parse, os, sys, json
 
-config_file_name = 'awsapi.config'
+# 別ディレクトリのため、パス追加
+script_dir = os.path.abspath(__file__)
+base_dir = os.path.join(os.path.dirname(script_dir), '..')
+sys.path.append(os.path.join(base_dir, 'com'))
+
+from console import *
+import file_manager as file_operation
+
+config_file_name = os.path.join(base_dir, 'config', 'awsapi.config')
 config_key = 'config'
 config_key_url = 'url'
 config_key_api_key = 'api_key'
