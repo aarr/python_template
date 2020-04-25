@@ -3,3 +3,4 @@ python_template/basic/pprint_test_data.py
 *temp_data*
 python_template/log/
 python_template/__pycache__/
+python_template/*/__pycache__/
