@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'python_template'
-copyright = '2019, arai-r'
-author = 'arai-r'
+copyright = '2020, ar'
+author = 'ar'
 
 
 # -- General configuration ---------------------------------------------------
@@ -43,7 +43,7 @@ language = 'ja'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = []
 
 
 # -- Options for HTML output -------------------------------------------------

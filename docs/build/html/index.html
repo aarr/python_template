@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>パッケージ &#8212; python_template  ドキュメント</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>パッケージ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id2">
+<h2>構成<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">複数のモジュールを集約したディレクトリのことをパッケージと呼ぶ</div>
+<div class="line">モジュール＝ファイル、パッケージ＝ディレクトリ</div>
+<div class="line">パッケージには必ず「__init__,py」が必要になる</div>
+<div class="line">以下の構成で、下記コマンドにてパケージを実行することが可能</div>
+<div class="line">__main__.pyが実行される為、</div>
+</div>
+</div></blockquote>
+<div class="literal-block-wrapper docutils container" id="execute-package">
+<div class="code-block-caption"><span class="caption-text">実行コマンド</span><a class="headerlink" href="#execute-package" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python my_package_name
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">パッケージ構成</span><a class="headerlink" href="#id10" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> my_package_name
+ |- __main__.py
+ |- __init__.py               &lt;- これがないとパッケージと呼ぶことはできない
+ |---src                      &lt;- パッケージのディレクトリ。ディレクトリ名＝パッケージ名
+ |   |--- __init__.py         &lt;- Pythonパッケージとして認識されない。importできない
+ |   |---mod1
+ |   |   |--- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
+ |   |   |--- main.py
+ |   |---mod2
+ |   |   |--- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
+ |       ┗--- sub1.py
+ |       ┗--- sub2.py
+ |---test
+ |   |---mod1
+ |      |--- __init__.py     &lt;- Pythonパッケージとして認識されない。テストモジュールとして認識されない
+ |      |--- test_main.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>シンボリックテーブル<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">モジュールはそれぞれプライベートなシンボルテーブルを保持している。</div>
+<div class="line">モジュールでは、これをグローバルなシンボルテーブルとして使用する。</div>
+<div class="line">その為、他モジュールとグローバル変数の競合は発生しない。</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id4">
+<h2>インポート<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">インポートとは、自身のシンボリックテーブルに、インポートしたモジュールのシンボリックテーブルを取り込むということである。</div>
+<div class="line">パッケージ名までのインポートは、そのパッケージ（ディレクトリ）の「__init__.py」を読み込むことになる。</div>
+<div class="line">仮に「__init__.py」に何も記載されていない場合、インポートしても何も取り込まれない。</div>
+<div class="line">モジュール名までインポートする場合、そのモジュール内の関数を読みこむことになる。</div>
+<div class="line">「__init__.py」を実装することで、パッケージをインポートするだけでパッケージ内のモジュールをインポートできる。</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">module</span> <span class="kn">import</span> <span class="o">*</span>           <span class="c1"># moduleの「_」始まり以外の定義をすべて取り込む</span>
+<span class="kn">from</span> <span class="nn">module</span> <span class="kn">import</span> <span class="n">func</span> <span class="k">as</span> <span class="n">mf</span>  <span class="c1"># 取り込む名称を変えることも可能</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id5">
+<h2>インポートの種類<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="arabic simple">
+<li><p>暗黙的な相対インポート</p></li>
+<li><p>明示的な相対インポート</p></li>
+<li><p>絶対インポート</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">暗黙の相対インポート例：src/mod1/main.py</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">..mod2.sub1</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">明示的な相対インポート例：src/mod2/sub1.py</span><a class="headerlink" href="#id12" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">sub2</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>トップレベルでパッケージと実行された際（<a class="reference internal" href="#execute-package"><span class="std std-ref">実行コマンド</span></a>）には
+正しく動作するが、moduleとして実行された場合にはエラーとなる。
+「.」が認識されるディレクトリが変わる為</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">絶対インポート例：src/mod2/sub1.py</span><a class="headerlink" href="#id13" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">src.mod2.sub2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>モジュール検索パス<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">Pythonではモジュールを検索する際に下記の順序で検索を行う。</div>
+</div>
+<ol class="arabic simple">
+<li><p>ビルドインモジュール（Pythonに最初から組み込まれているモジュール）</p></li>
+<li><p>sys.path</p></li>
+</ol>
+<blockquote>
+<div><div class="line-block">
+<div class="line">下記の内容で初期される</div>
+<div class="line">1. sys.pathで指定されているディレクトリ</div>
+<div class="line">2. PYTHONPATH</div>
+<div class="line">3. インストールごとのデフォルト（実行されるPythonスクリプトのディレクトリ）</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">編集可能（追加の例）</span><a class="headerlink" href="#id14" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="vertual-env-label">
+<span id="id7"></span><h2>仮想環境<a class="headerlink" href="#vertual-env-label" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">複数の開発を行っている際に、異なるバージョンのパッケージを利用したい場合、仮想環境を分けることでその実現が可能</div>
+<div class="line">仮想環境名はディレクトリ名となる。下記の例であれば、カレントディレクトリの名称が仮想環境名となる。</div>
+</div>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">カレントディレクトリに仮想環境を構築</span><a class="headerlink" href="#id15" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m venv .
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">有効化</span><a class="headerlink" href="#id16" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> ./bin/activate
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">デフォルトに戻す</span><a class="headerlink" href="#id17" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>カレントディレクトリ<span class="o">)</span> $ deactivate
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="id8">
+<h2>テスト<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><p>unittest</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line">テストスクリプトの命名規約に合わせ、unittestをモジュール実行（オプションｍ）することでテスト実行可能</div>
+<div class="line">オプションm：sys.pathから指定されたモジュールを探し、__main__モジュールとして実行</div>
+<div class="line">実行時にはテスト対象パッケージのトップレベルディレクトリで実行する（sys.pathに追加されるので）</div>
+</div>
+<div class="line-block">
+<div class="line">テストスクリプトは「test_xxx.py」とする</div>
+</div>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">テスト実行</span><a class="headerlink" href="#id18" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m unittest discover
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">test_main.py</span><a class="headerlink" href="#id19" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">src.main</span> <span class="k">as</span> <span class="nn">target</span>
+
+<span class="k">class</span> <span class="nc">TestMain</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">target</span>
+
+   <span class="k">def</span> <span class="nf">test_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">asserTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id9">
+<h1>その他<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="sphinx-restructuredtext">
+<h2>sphinx(reStructuredText)<a class="headerlink" href="#sphinx-restructuredtext" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>install</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">sphinxのinstall</span><a class="headerlink" href="#id20" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip3 install sphinx
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">sphinx-quickstartのinstall確認</span><a class="headerlink" href="#id21" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ which sphinx-quickstart
+$ sphinx-quickstart --version
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">ドキュメント作成</span><a class="headerlink" href="#id22" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sphinx-quickstart documentName
+<span class="c1"># sphinx-quickstart docs</span>
+<span class="c1"># これでdocsディレクトリが作成され、その中にrstファイルからhtmlを作成する為のスクリプト等が生成される</span>
+</pre></div>
+</div>
+</div>
+<ul>
+<li><p>rstファイル-&gt;html生成</p>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">docsフォルダにて実行（index.rstを編集）</span><a class="headerlink" href="#id23" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make html
+<span class="c1"># html以外も生成可能。</span>
+</pre></div>
+</div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="aws-lambda">
+<h2>AWS lambda<a class="headerlink" href="#aws-lambda" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ol class="arabic">
+<li><p><a class="reference internal" href="#vertual-env-label"><span class="std std-ref">仮想環境</span></a> 構築</p></li>
+<li><p>必要モジュールのinstall</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ./bin/activate
+<span class="o">(</span>my_package_name<span class="o">)</span> $ pip3 install package_name
+<span class="o">(</span>my_package_name<span class="o">)</span> $ deactivate
+</pre></div>
+</div>
+</li>
+<li><p>zipファイルに纏める</p>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id24" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ zip -r9 ./function.zip ./lib/python3.8/site-packages
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>lambda_handlerの追加</p>
+<div class="literal-block-wrapper docutils container" id="id25">
+<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id25" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ zip -g ./function.zip ./lambda_hanlder.py
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>awc-cli、もしくはGUIにてアップロード</p>
+<div class="literal-block-wrapper docutils container" id="id26">
+<div class="code-block-caption"><span class="caption-text">aws-cliの場合</span><a class="headerlink" href="#id26" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
+</pre></div>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">python_template</a></h1>
+
+
+
+
+
+
+
+
+<h3>ナビゲーション</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, ar.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -20,6 +20,8 @@ logging.basicConfig(
     level=logging.ERROR,
     format= '%(asctime)s[%(levelname)s] %(message)s'
 )
+# basicConfigで設定している内容から、設定を一部変更して利用したい場合loggerを定義する
+# basicConfig通り利用する場合は、定義する必要はない
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 

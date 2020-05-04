@@ -5,6 +5,7 @@
 ファイル操作サンプル集
 """
 
+import os
 from com.console import *
 from com.file_manager import *
 

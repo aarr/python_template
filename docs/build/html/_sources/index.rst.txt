@@ -1,0 +1,225 @@
+パッケージ
+======================================
+
+構成
+---------------------------
+
+ | 複数のモジュールを集約したディレクトリのことをパッケージと呼ぶ
+ | モジュール＝ファイル、パッケージ＝ディレクトリ
+ | パッケージには必ず「__init__,py」が必要になる
+ | 以下の構成で、下記コマンドにてパケージを実行することが可能
+ | __main__.pyが実行される為、
+
+.. code-block:: bash
+   :caption: 実行コマンド
+   :name: execute_package
+
+   $ python my_package_name
+
+.. code-block:: text
+   :caption: パッケージ構成
+
+    my_package_name
+    |- __main__.py
+    |- __init__.py               <- これがないとパッケージと呼ぶことはできない
+    |---src                      <- パッケージのディレクトリ。ディレクトリ名＝パッケージ名
+    |   |--- __init__.py         <- Pythonパッケージとして認識されない。importできない
+    |   |---mod1
+    |   |   |--- __init__.py     <- Pythonパッケージとして認識されない。importできない
+    |   |   |--- main.py
+    |   |---mod2
+    |   |   |--- __init__.py     <- Pythonパッケージとして認識されない。importできない
+    |       ┗--- sub1.py
+    |       ┗--- sub2.py
+    |---test
+    |   |---mod1
+    |      |--- __init__.py     <- Pythonパッケージとして認識されない。テストモジュールとして認識されない
+    |      |--- test_main.py
+
+
+シンボリックテーブル
+---------------------------
+
+ | モジュールはそれぞれプライベートなシンボルテーブルを保持している。
+ | モジュールでは、これをグローバルなシンボルテーブルとして使用する。
+ | その為、他モジュールとグローバル変数の競合は発生しない。
+
+
+インポート
+---------------------------
+ | インポートとは、自身のシンボリックテーブルに、インポートしたモジュールのシンボリックテーブルを取り込むということである。
+ | パッケージ名までのインポートは、そのパッケージ（ディレクトリ）の「__init__.py」を読み込むことになる。
+ | 仮に「__init__.py」に何も記載されていない場合、インポートしても何も取り込まれない。
+ | モジュール名までインポートする場合、そのモジュール内の関数を読みこむことになる。
+ | 「__init__.py」を実装することで、パッケージをインポートするだけでパッケージ内のモジュールをインポートできる。
+
+ .. code-block:: python
+
+   from module import *           # moduleの「_」始まり以外の定義をすべて取り込む
+   from module import func as mf  # 取り込む名称を変えることも可能
+
+
+インポートの種類
+---------------------------
+
+#. 暗黙的な相対インポート
+#. 明示的な相対インポート
+#. 絶対インポート
+
+.. code-block:: python
+   :caption: 暗黙の相対インポート例：src/mod1/main.py
+
+    import ..mod2.sub1
+    
+.. code-block:: python
+   :caption: 明示的な相対インポート例：src/mod2/sub1.py
+
+    from . import sub2
+
+.. warning::
+   トップレベルでパッケージと実行された際（:ref:`execute_package`）には
+   正しく動作するが、moduleとして実行された場合にはエラーとなる。
+   「.」が認識されるディレクトリが変わる為
+
+.. code-block:: python
+   :caption: 絶対インポート例：src/mod2/sub1.py
+
+    import src.mod2.sub2
+
+
+モジュール検索パス
+---------------------------
+ | Pythonではモジュールを検索する際に下記の順序で検索を行う。
+
+ #. ビルドインモジュール（Pythonに最初から組み込まれているモジュール）
+ #. sys.path
+
+   | 下記の内容で初期される
+   | 1. sys.pathで指定されているディレクトリ
+   | 2. PYTHONPATH
+   | 3. インストールごとのデフォルト（実行されるPythonスクリプトのディレクトリ）
+
+   .. code-block:: python
+      :caption: 編集可能（追加の例）
+
+      sys.path.append(add_path)
+
+
+.. _vertual-env-label:
+
+仮想環境
+---------------------------
+ | 複数の開発を行っている際に、異なるバージョンのパッケージを利用したい場合、仮想環境を分けることでその実現が可能
+ | 仮想環境名はディレクトリ名となる。下記の例であれば、カレントディレクトリの名称が仮想環境名となる。
+
+   .. code-block:: bash
+      :caption: カレントディレクトリに仮想環境を構築
+
+      $ python -m venv .
+
+   .. code-block:: bash
+      :caption: 有効化
+
+      $ source ./bin/activate
+
+   .. code-block:: bash
+      :caption: デフォルトに戻す
+
+      (カレントディレクトリ) $ deactivate
+
+
+テスト
+---------------------------
+
+* unittest
+
+ | テストスクリプトの命名規約に合わせ、unittestをモジュール実行（オプションｍ）することでテスト実行可能
+ | オプションm：sys.pathから指定されたモジュールを探し、__main__モジュールとして実行
+ | 実行時にはテスト対象パッケージのトップレベルディレクトリで実行する（sys.pathに追加されるので）
+
+ | テストスクリプトは「test_xxx.py」とする
+
+   .. code-block:: bash
+      :caption: テスト実行
+
+      $ python -m unittest discover
+
+   .. code-block:: python
+      :caption: test_main.py
+
+      import unittest
+      import src.main as target
+
+      class TestMain(unittest.TestCase):
+         def setup(self):
+            self.func = target
+         
+         def test_1(self):
+            self.asserTrue(self.func())
+
+
+
+その他
+======================================
+
+sphinx(reStructuredText)
+---------------------------
+
+ * install
+
+ .. code-block:: bash
+   :caption: sphinxのinstall
+
+   $ pip3 install sphinx
+
+ .. code-block:: bash
+   :caption: sphinx-quickstartのinstall確認
+
+   $ which sphinx-quickstart
+   $ sphinx-quickstart --version
+
+ .. code-block:: bash
+   :caption: ドキュメント作成
+
+   $ sphinx-quickstart documentName
+   # sphinx-quickstart docs
+   # これでdocsディレクトリが作成され、その中にrstファイルからhtmlを作成する為のスクリプト等が生成される
+
+
+ * rstファイル->html生成
+
+   .. code-block:: bash
+      :caption: docsフォルダにて実行（index.rstを編集）
+
+      $ make html
+      # html以外も生成可能。
+
+
+AWS lambda
+---------------------------
+#. :ref:`vertual-env-label` 構築
+#. 必要モジュールのinstall
+
+   .. code-block:: bash
+
+      $ ./bin/activate
+      (my_package_name) $ pip3 install package_name
+      (my_package_name) $ deactivate
+#. zipファイルに纏める
+
+   .. code-block:: bash
+      :caption: my_package_nameディレクトリ直下で実行
+
+      $ zip -r9 ./function.zip ./lib/python3.8/site-packages
+#. lambda_handlerの追加
+
+   .. code-block:: bash
+      :caption: my_package_nameディレクトリ直下で実行
+
+      $ zip -g ./function.zip ./lambda_hanlder.py
+#. awc-cli、もしくはGUIにてアップロード
+
+   .. code-block:: bash
+      :caption: aws-cliの場合
+
+      aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip

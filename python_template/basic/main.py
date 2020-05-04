@@ -1,4 +1,4 @@
-# basic.py
+# main.py
 
 """ Pythonサンプル
 Python基本実装集
@@ -13,7 +13,7 @@ def execute():
     log('+++++++++++++++++++ START +++++++++++++++++++')
     log('#============================')
     log('# 基本')
-    log('#============================')
+    lo('#============================')
     skip_other_script = True if len(sys.argv) == 2 and sys.argv[1] == 'skip' else False
     log('SKIP OTHER SCRIPT', skip_other_script)
 
