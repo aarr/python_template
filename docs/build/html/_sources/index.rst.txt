@@ -197,29 +197,32 @@ sphinx(reStructuredText)
 
 AWS lambda
 ---------------------------
-#. :ref:`vertual-env-label` 構築
-#. 必要モジュールのinstall
+ | venvを利用し、必要なパッケージのみを抽出できるようにする。
+ | 独自実行したlambda_hanlderをそれらに加え、zipファイルとしてUpload
 
-   .. code-block:: bash
+   #. :ref:`vertual-env-label` 構築
+   #. 必要モジュールのinstall
 
-      $ ./bin/activate
-      (my_package_name) $ pip3 install package_name
-      (my_package_name) $ deactivate
-#. zipファイルに纏める
+      .. code-block:: bash
 
-   .. code-block:: bash
-      :caption: my_package_nameディレクトリ直下で実行
+         $ ./bin/activate
+         (my_package_name) $ pip3 install package_name
+         (my_package_name) $ deactivate
+   #. zipファイルに纏める
 
-      $ zip -r9 ./function.zip ./lib/python3.8/site-packages
-#. lambda_handlerの追加
+      .. code-block:: bash
+         :caption: my_package_nameディレクトリ直下で実行
 
-   .. code-block:: bash
-      :caption: my_package_nameディレクトリ直下で実行
+         $ zip -r9 ./function.zip ./lib/python3.8/site-packages
+   #. lambda_handlerの追加
 
-      $ zip -g ./function.zip ./lambda_hanlder.py
-#. awc-cli、もしくはGUIにてアップロード
+      .. code-block:: bash
+         :caption: my_package_nameディレクトリ直下で実行
 
-   .. code-block:: bash
-      :caption: aws-cliの場合
+         $ zip -g ./function.zip ./lambda_hanlder.py
+   #. awc-cli、もしくはGUIにてアップロード
 
-      aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
+      .. code-block:: bash
+         :caption: aws-cliの場合
+
+         aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
