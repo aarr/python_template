@@ -46,26 +46,31 @@
 </div></blockquote>
 <div class="literal-block-wrapper docutils container" id="execute-package">
 <div class="code-block-caption"><span class="caption-text">実行コマンド</span><a class="headerlink" href="#execute-package" title="このコードへのパーマリンク">¶</a></div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python my_package_name
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># パッケージ実行</span>
+$ python ./src/my_package_name
+
+<span class="c1"># テスト実行</span>
+$ pytest -v
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">標準のパッケージ構成</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">標準のパッケージ構成。今回のケースだとsrcフォルダはなくてもよい。</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span> my_package_name
  |- README.rst
  |- LICENCE
- |---my_package_name        &lt;- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
- |   |- __main__.py         &lt;- パッケージ実行された際に呼ばれるスクリプト
- |   |- __init__.py         &lt;- Pythonパッケージとして認識されない。importできない
- |   |---mod1
- |   |   |- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
- |   |   |- main.py
- |   |
- |   |---mod2
+ |---src                    &lt;- モジュール名に重複がある場合にsrcフォルダを挟むことが推奨されている。
+ |   |- my_package_name     &lt;- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
+ |       |- __main__.py     &lt;- パッケージ実行された際に呼ばれるスクリプト
  |       |- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
- |       |- sub1.py
- |       |- sub2.py
+ |       |---mod1
+ |       |   |- __init__.py &lt;- Pythonパッケージとして認識されない。importできない
+ |       |   |- main.py
+ |       |
+ |       |---mod2
+ |           |- __init__.py &lt;- Pythonパッケージとして認識されない。importできない
+ |           |- sub1.py
+ |           |- sub2.py
  |
  |---tests
  |   |---mod1
@@ -131,7 +136,7 @@
 </div>
 <div class="admonition warning">
 <p class="admonition-title">警告</p>
-<p>トップレベルでパッケージと実行された際（<a class="reference internal" href="#execute-package"><span class="std std-ref">実行コマンド</span></a>）には
+<p>トップレベルでパッケージとして実行された際（<a class="reference internal" href="#execute-package"><span class="std std-ref">実行コマンド</span></a>）には
 正しく動作するが、moduleとして実行された場合にはエラーとなる。
 「.」が認識されるディレクトリが変わる為</p>
 </div>
@@ -269,6 +274,29 @@
 </pre></div>
 </div>
 </div>
+</div></blockquote>
+</div></blockquote>
+<ul class="simple">
+<li><p>pytest</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line">最も利用されているテストフレームワーク</div>
+<div class="line">テスト用関数命名規約に従うことで、自動でテスト対象を検索し、実行してくれる</div>
+<div class="line">サンプルは下記</div>
+<div class="line"><a class="reference external" href="https://github.com/aarr/pipenv_test">pipenv_test</a></div>
+</div>
+<blockquote>
+<div><ul class="simple">
+<li><p>特徴</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>PATHにルートディレクトリが追加される</p></li>
+<li><p>fixutureを利用することで、setup/teardownの様な実装も可能</p></li>
+<li><p>fixutureの実行スコープを定義可能（テスト全体、モジュール単位、メソッド単位など）</p></li>
+<li><p>同階層、サブ階層で共通利用可能なfixuture定義として、conftest.pyに実装可能</p></li>
+<li><p>全テストケースで必ず実行するfixutureはメソッド毎に定義を追加しなくても、iniファイルに記載が可能</p></li>
+</ol>
 </div></blockquote>
 </div></blockquote>
 </div>

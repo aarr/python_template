@@ -14,25 +14,30 @@
    :caption: 実行コマンド
    :name: execute_package
 
-   $ python my_package_name
+   # パッケージ実行
+   $ python ./src/my_package_name
+
+   # テスト実行
+   $ pytest -v
 
 .. code-block:: text
-   :caption: 標準のパッケージ構成
+   :caption: 標準のパッケージ構成。今回のケースだとsrcフォルダはなくてもよい。
 
     my_package_name
     |- README.rst
     |- LICENCE
-    |---my_package_name        <- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
-    |   |- __main__.py         <- パッケージ実行された際に呼ばれるスクリプト
-    |   |- __init__.py         <- Pythonパッケージとして認識されない。importできない
-    |   |---mod1
-    |   |   |- __init__.py     <- Pythonパッケージとして認識されない。importできない
-    |   |   |- main.py
-    |   |
-    |   |---mod2
+    |---src                    <- モジュール名に重複がある場合にsrcフォルダを挟むことが推奨されている。
+    |   |- my_package_name     <- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
+    |       |- __main__.py     <- パッケージ実行された際に呼ばれるスクリプト
     |       |- __init__.py     <- Pythonパッケージとして認識されない。importできない
-    |       |- sub1.py
-    |       |- sub2.py
+    |       |---mod1
+    |       |   |- __init__.py <- Pythonパッケージとして認識されない。importできない
+    |       |   |- main.py
+    |       |
+    |       |---mod2
+    |           |- __init__.py <- Pythonパッケージとして認識されない。importできない
+    |           |- sub1.py
+    |           |- sub2.py
     |
     |---tests
     |   |---mod1
@@ -89,7 +94,7 @@
     from . import sub2
 
 .. warning::
-   トップレベルでパッケージと実行された際（:ref:`execute_package`）には
+   トップレベルでパッケージとして実行された際（:ref:`execute_package`）には
    正しく動作するが、moduleとして実行された場合にはエラーとなる。
    「.」が認識されるディレクトリが変わる為
 
@@ -194,7 +199,20 @@
             """終了処理"""
             self.func = None 
 
+* pytest
 
+ | 最も利用されているテストフレームワーク
+ | テスト用関数命名規約に従うことで、自動でテスト対象を検索し、実行してくれる
+ | サンプルは下記
+ | `pipenv_test <https://github.com/aarr/pipenv_test>`_
+
+   * 特徴
+
+   #. PATHにルートディレクトリが追加される
+   #. fixutureを利用することで、setup/teardownの様な実装も可能
+   #. fixutureの実行スコープを定義可能（テスト全体、モジュール単位、メソッド単位など）
+   #. 同階層、サブ階層で共通利用可能なfixuture定義として、conftest.pyに実装可能
+   #. 全テストケースで必ず実行するfixutureはメソッド毎に定義を追加しなくても、iniファイルに記載が可能
 
 
 その他
