@@ -50,24 +50,36 @@
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">パッケージ構成</span><a class="headerlink" href="#id10" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">標準のパッケージ構成</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span> my_package_name
- |- __main__.py
- |- __init__.py               &lt;- これがないとパッケージと呼ぶことはできない
- |---src                      &lt;- パッケージのディレクトリ。ディレクトリ名＝パッケージ名
- |   |--- __init__.py         &lt;- Pythonパッケージとして認識されない。importできない
+ |- README.rst
+ |- LICENCE
+ |---my_package_name        &lt;- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
+ |   |- __main__.py         &lt;- パッケージ実行された際に呼ばれるスクリプト
+ |   |- __init__.py         &lt;- Pythonパッケージとして認識されない。importできない
  |   |---mod1
- |   |   |--- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
- |   |   |--- main.py
+ |   |   |- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
+ |   |   |- main.py
+ |   |
  |   |---mod2
- |   |   |--- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
- |       ┗--- sub1.py
- |       ┗--- sub2.py
- |---test
+ |       |- __init__.py     &lt;- Pythonパッケージとして認識されない。importできない
+ |       |- sub1.py
+ |       |- sub2.py
+ |
+ |---tests
  |   |---mod1
- |      |--- __init__.py     &lt;- Pythonパッケージとして認識されない。テストモジュールとして認識されない
- |      |--- test_main.py
+ |       |- __init__.py     &lt;- Pythonパッケージとして認識されない。テストモジュールとして認識されない
+ |       |- test_main.py
+ |
+ |---docs                   &lt;- sphinxで生成するドキュメント（後述）
+     |- Makefile
+     |- make.bat
+     |---build
+     |   |- index.html
+     |
+     |---source
+         |- index.rst
 </pre></div>
 </div>
 </div>
@@ -105,14 +117,14 @@
 <li><p>明示的な相対インポート</p></li>
 <li><p>絶対インポート</p></li>
 </ol>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">暗黙の相対インポート例：src/mod1/main.py</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">暗黙の相対インポート例：my_package_name/mod1/main.py</span><a class="headerlink" href="#id12" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">..mod2.sub1</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">明示的な相対インポート例：src/mod2/sub1.py</span><a class="headerlink" href="#id12" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">明示的な相対インポート例：my_package_name/mod2/sub1.py</span><a class="headerlink" href="#id13" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">sub2</span>
 </pre></div>
 </div>
@@ -123,9 +135,9 @@
 正しく動作するが、moduleとして実行された場合にはエラーとなる。
 「.」が認識されるディレクトリが変わる為</p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">絶対インポート例：src/mod2/sub1.py</span><a class="headerlink" href="#id13" title="このコードへのパーマリンク">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">src.mod2.sub2</span>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">絶対インポート例：my_package_name/mod2/sub1.py</span><a class="headerlink" href="#id14" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">import</span> <span class="nn">my_package_name.mod2.sub2</span>
 </pre></div>
 </div>
 </div>
@@ -147,8 +159,8 @@
 <div class="line">2. PYTHONPATH</div>
 <div class="line">3. インストールごとのデフォルト（実行されるPythonスクリプトのディレクトリ）</div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">編集可能（追加の例）</span><a class="headerlink" href="#id14" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">編集可能（追加の例）</span><a class="headerlink" href="#id15" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_path</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -160,33 +172,62 @@
 <span id="id7"></span><h2>仮想環境<a class="headerlink" href="#vertual-env-label" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <blockquote>
 <div><div class="line-block">
+<div class="line">pipenvをメインで利用し、必要ならdirenvも利用。</div>
+<div class="line">直接触らないが、裏ではvenvが利用されている。</div>
+</div>
+</div></blockquote>
+<ul class="simple">
+<li><p>venv</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
 <div class="line">複数の開発を行っている際に、異なるバージョンのパッケージを利用したい場合、仮想環境を分けることでその実現が可能</div>
 <div class="line">仮想環境名はディレクトリ名となる。下記の例であれば、カレントディレクトリの名称が仮想環境名となる。</div>
 </div>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id15">
-<div class="code-block-caption"><span class="caption-text">カレントディレクトリに仮想環境を構築</span><a class="headerlink" href="#id15" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">カレントディレクトリに仮想環境を構築</span><a class="headerlink" href="#id16" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m venv .
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">有効化</span><a class="headerlink" href="#id16" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">有効化</span><a class="headerlink" href="#id17" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> ./bin/activate
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">デフォルトに戻す</span><a class="headerlink" href="#id17" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">デフォルトに戻す</span><a class="headerlink" href="#id18" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>カレントディレクトリ<span class="o">)</span> $ deactivate
 </pre></div>
 </div>
 </div>
 </div></blockquote>
 </div></blockquote>
+<ul class="simple">
+<li><p>pipenv</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line">pip（パッケージの管理）とvenv（仮想環境）の機能をあわせて提供している（ラップしている）</div>
+<div class="line"><a class="reference internal" href="pipenv.html"><span class="doc">詳細</span></a></div>
+<div class="line"><a class="reference external" href="https://pipenv-ja.readthedocs.io/ja/translate-ja/">本家開発フロー</a></div>
 </div>
-<div class="section" id="id8">
-<h2>テスト<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h2>
+</div></blockquote>
+<ul class="simple">
+<li><p>direnv</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line">venvにおけるactivate/deactivateを自動で行うためのツール</div>
+<div class="line">特定のフォルダに移動した際に、環境変数を行う。</div>
+<div class="line"><a class="reference external" href="https://direnv.net">direnv</a></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id9">
+<h2>テスト<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <ul class="simple">
 <li><p>unittest</p></li>
 </ul>
@@ -197,26 +238,34 @@
 <div class="line">実行時にはテスト対象パッケージのトップレベルディレクトリで実行する（sys.pathに追加されるので）</div>
 </div>
 <div class="line-block">
-<div class="line">テストスクリプトは「test_xxx.py」とする</div>
+<div class="line">テストスクリプトは「test_script.py」とする</div>
+<div class="line">テストス関数名は「test_func」とする</div>
 </div>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text">テスト実行</span><a class="headerlink" href="#id18" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">テスト実行</span><a class="headerlink" href="#id19" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m unittest discover
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id19">
-<div class="code-block-caption"><span class="caption-text">test_main.py</span><a class="headerlink" href="#id19" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">test_main.py</span><a class="headerlink" href="#id20" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
-<span class="kn">import</span> <span class="nn">src.main</span> <span class="k">as</span> <span class="nn">target</span>
+<span class="kn">import</span> <span class="nn">my_package_name.main</span> <span class="k">as</span> <span class="nn">target</span>
 
 <span class="k">class</span> <span class="nc">TestMain</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-   <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+   <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;初期処理&quot;&quot;&quot;</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">target</span>
 
    <span class="k">def</span> <span class="nf">test_1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;テスト内容&quot;&quot;&quot;</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">asserTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">())</span>
+
+   <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;終了処理&quot;&quot;&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
@@ -224,29 +273,29 @@
 </div></blockquote>
 </div>
 </div>
-<div class="section" id="id9">
-<h1>その他<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id10">
+<h1>その他<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="sphinx-restructuredtext">
 <h2>sphinx(reStructuredText)<a class="headerlink" href="#sphinx-restructuredtext" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
 <li><p>install</p></li>
 </ul>
-<div class="literal-block-wrapper docutils container" id="id20">
-<div class="code-block-caption"><span class="caption-text">sphinxのinstall</span><a class="headerlink" href="#id20" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">sphinxのinstall</span><a class="headerlink" href="#id21" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip3 install sphinx
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id21">
-<div class="code-block-caption"><span class="caption-text">sphinx-quickstartのinstall確認</span><a class="headerlink" href="#id21" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">sphinx-quickstartのinstall確認</span><a class="headerlink" href="#id22" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ which sphinx-quickstart
 $ sphinx-quickstart --version
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id22">
-<div class="code-block-caption"><span class="caption-text">ドキュメント作成</span><a class="headerlink" href="#id22" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">ドキュメント作成</span><a class="headerlink" href="#id23" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sphinx-quickstart documentName
 <span class="c1"># sphinx-quickstart docs</span>
 <span class="c1"># これでdocsディレクトリが作成され、その中にrstファイルからhtmlを作成する為のスクリプト等が生成される</span>
@@ -255,8 +304,8 @@ $ sphinx-quickstart --version
 </div>
 <ul>
 <li><p>rstファイル-&gt;html生成</p>
-<div class="literal-block-wrapper docutils container" id="id23">
-<div class="code-block-caption"><span class="caption-text">docsフォルダにて実行（index.rstを編集）</span><a class="headerlink" href="#id23" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-text">docsフォルダにて実行（index.rstを編集）</span><a class="headerlink" href="#id24" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make html
 <span class="c1"># html以外も生成可能。</span>
 </pre></div>
@@ -284,25 +333,25 @@ $ sphinx-quickstart --version
 </div>
 </li>
 <li><p>zipファイルに纏める</p>
-<div class="literal-block-wrapper docutils container" id="id24">
-<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id24" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id25">
+<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id25" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ zip -r9 ./function.zip ./lib/python3.8/site-packages
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>lambda_handlerの追加</p>
-<div class="literal-block-wrapper docutils container" id="id25">
-<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id25" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id26">
+<div class="code-block-caption"><span class="caption-text">my_package_nameディレクトリ直下で実行</span><a class="headerlink" href="#id26" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ zip -g ./function.zip ./lambda_hanlder.py
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>awc-cli、もしくはGUIにてアップロード</p>
-<div class="literal-block-wrapper docutils container" id="id26">
-<div class="code-block-caption"><span class="caption-text">aws-cliの場合</span><a class="headerlink" href="#id26" title="このコードへのパーマリンク">¶</a></div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
+<div class="literal-block-wrapper docutils container" id="id27">
+<div class="code-block-caption"><span class="caption-text">aws-cliの場合</span><a class="headerlink" href="#id27" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
 </pre></div>
 </div>
 </div>

@@ -17,24 +17,36 @@
    $ python my_package_name
 
 .. code-block:: text
-   :caption: パッケージ構成
+   :caption: 標準のパッケージ構成
 
     my_package_name
-    |- __main__.py
-    |- __init__.py               <- これがないとパッケージと呼ぶことはできない
-    |---src                      <- パッケージのディレクトリ。ディレクトリ名＝パッケージ名
-    |   |--- __init__.py         <- Pythonパッケージとして認識されない。importできない
+    |- README.rst
+    |- LICENCE
+    |---my_package_name        <- ソースを配置。単一モジュールであれば、ルート直下への配置でもよい。
+    |   |- __main__.py         <- パッケージ実行された際に呼ばれるスクリプト
+    |   |- __init__.py         <- Pythonパッケージとして認識されない。importできない
     |   |---mod1
-    |   |   |--- __init__.py     <- Pythonパッケージとして認識されない。importできない
-    |   |   |--- main.py
+    |   |   |- __init__.py     <- Pythonパッケージとして認識されない。importできない
+    |   |   |- main.py
+    |   |
     |   |---mod2
-    |   |   |--- __init__.py     <- Pythonパッケージとして認識されない。importできない
-    |       ┗--- sub1.py
-    |       ┗--- sub2.py
-    |---test
+    |       |- __init__.py     <- Pythonパッケージとして認識されない。importできない
+    |       |- sub1.py
+    |       |- sub2.py
+    |
+    |---tests
     |   |---mod1
-    |      |--- __init__.py     <- Pythonパッケージとして認識されない。テストモジュールとして認識されない
-    |      |--- test_main.py
+    |       |- __init__.py     <- Pythonパッケージとして認識されない。テストモジュールとして認識されない
+    |       |- test_main.py
+    |
+    |---docs                   <- sphinxで生成するドキュメント（後述）
+        |- Makefile
+        |- make.bat
+        |---build
+        |   |- index.html
+        |
+        |---source
+            |- index.rst
 
 
 シンボリックテーブル
@@ -67,12 +79,12 @@
 #. 絶対インポート
 
 .. code-block:: python
-   :caption: 暗黙の相対インポート例：src/mod1/main.py
+   :caption: 暗黙の相対インポート例：my_package_name/mod1/main.py
 
     import ..mod2.sub1
     
 .. code-block:: python
-   :caption: 明示的な相対インポート例：src/mod2/sub1.py
+   :caption: 明示的な相対インポート例：my_package_name/mod2/sub1.py
 
     from . import sub2
 
@@ -82,9 +94,9 @@
    「.」が認識されるディレクトリが変わる為
 
 .. code-block:: python
-   :caption: 絶対インポート例：src/mod2/sub1.py
+   :caption: 絶対インポート例：my_package_name/mod2/sub1.py
 
-    import src.mod2.sub2
+    import my_package_name.mod2.sub2
 
 
 モジュール検索パス
@@ -109,6 +121,11 @@
 
 仮想環境
 ---------------------------
+ | pipenvをメインで利用し、必要ならdirenvも利用。
+ | 直接触らないが、裏ではvenvが利用されている。
+
+* venv
+
  | 複数の開発を行っている際に、異なるバージョンのパッケージを利用したい場合、仮想環境を分けることでその実現が可能
  | 仮想環境名はディレクトリ名となる。下記の例であれば、カレントディレクトリの名称が仮想環境名となる。
 
@@ -127,6 +144,18 @@
 
       (カレントディレクトリ) $ deactivate
 
+* pipenv
+
+ | pip（パッケージの管理）とvenv（仮想環境）の機能をあわせて提供している（ラップしている）
+ | :doc:`詳細<pipenv>`
+ | `本家開発フロー <https://pipenv-ja.readthedocs.io/ja/translate-ja/>`_
+
+
+* direnv
+
+ | venvにおけるactivate/deactivateを自動で行うためのツール
+ | 特定のフォルダに移動した際に、環境変数を行う。
+ | `direnv <https://direnv.net>`_
 
 テスト
 ---------------------------
@@ -137,7 +166,8 @@
  | オプションm：sys.pathから指定されたモジュールを探し、__main__モジュールとして実行
  | 実行時にはテスト対象パッケージのトップレベルディレクトリで実行する（sys.pathに追加されるので）
 
- | テストスクリプトは「test_xxx.py」とする
+ | テストスクリプトは「test_script.py」とする
+ | テストス関数名は「test_func」とする
 
    .. code-block:: bash
       :caption: テスト実行
@@ -148,14 +178,22 @@
       :caption: test_main.py
 
       import unittest
-      import src.main as target
+      import my_package_name.main as target
 
       class TestMain(unittest.TestCase):
-         def setup(self):
+
+         def setUp(self):
+            """初期処理"""
             self.func = target
          
          def test_1(self):
+            """テスト内容"""
             self.asserTrue(self.func())
+
+         def tearDown(self):
+            """終了処理"""
+            self.func = None 
+
 
 
 

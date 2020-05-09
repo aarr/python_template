@@ -13,7 +13,7 @@ def execute():
     log('+++++++++++++++++++ START +++++++++++++++++++')
     log('#============================')
     log('# 基本')
-    lo('#============================')
+    log('#============================')
     skip_other_script = True if len(sys.argv) == 2 and sys.argv[1] == 'skip' else False
     log('SKIP OTHER SCRIPT', skip_other_script)
 
@@ -256,6 +256,10 @@ def execute():
         basic.file_operation.main()
 
         import basic.file_control
+
+        # with句  +++++++++++++++++++++++
+        import basic.with_sample
+
 
     # プログラム終了 +++++++++++++++++++++++
     log('+++++++++++++++++++ END +++++++++++++++++++')
