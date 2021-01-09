@@ -9,7 +9,7 @@ from com.console import *
 def execute():
     import itertools, random, traceback
     import sys, datetime, time
-
+i
     log('+++++++++++++++++++ START +++++++++++++++++++')
     log('#============================')
     log('# 基本')

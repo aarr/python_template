@@ -45,7 +45,7 @@ shutil.move(move_test_file, move_test_path)
 log('MOVE', '{0} -> {1}'.format(move_test_file, move_test_path))
 log_add_line(1)
 
-# ゴミ箱移動`
+# ゴミ箱移動
 log(' - send to trash')
 trash_test_file = os.path.join(work_dir, 'trash_test_file')
 file_operation.write_file(trash_test_file, 'a', 'trash data')
