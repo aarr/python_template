@@ -7,9 +7,19 @@ Python基本実装集
 from com.console import *
 
 def execute():
+    """Excample function with types documentted in the docstring.
+    関数の説明を記述。execute.__doc__によって参照可能
+
+    Args:
+        param1 (int): The first paramter.
+        param2 (str): The second parameter.
+
+    Returns:
+        bool: The return value. True for success, False otherwire
+    """
     import itertools, random, traceback
     import sys, datetime, time
-i
+
     log('+++++++++++++++++++ START +++++++++++++++++++')
     log('#============================')
     log('# 基本')

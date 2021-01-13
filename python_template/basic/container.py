@@ -93,6 +93,15 @@ new_list_sum = sorted(list_sum)
 log('SORTED', new_list_sum)
 log_add_line(1)
 
+# ＞リスト内包表記
+log("＞リスト内包表記 ---------------")
+# メモリを使わないので早いと言われている
+# 複数のfor文を記載することも可能だが、可読性が下がるためfor文1つ、if文1つぐらいなら良いだろう
+t = (1, 2, 3, 4, 5)
+l = [i for i in t if i % 2 == 0]
+log('リスト内容', l)
+log_add_line(1)
+
 
 # ＞文字列
 # リストはミュータブルだが、文字列はイミュータブル（不変）
@@ -184,8 +193,24 @@ import pprint
 # 文字列として取得したい場合は、pprint#pformatで取得可能
 log('同じ結果(pprint.pformat):')
 log(pprint.pformat(count))
+log_add_line(1)
+
+
+# ＞辞書内包表記
+log('＞辞書内包表記')
+key = ['key1', 'key2', 'key3', 'key4']
+value = [1, 2, 3, 4]
+dic = {x: y for x, y in zip(key, value)}
+log('辞書内容', dic)
 log_add_line()
 
+
+# 集合（set） +++++++++++++++++++++++
+log("＞集合（set） ---------------")
+log("＞集合内包表記 ---------------")
+s = {i for i in t}
+log('集合', s)
+log_add_line(1)
 
 
 # COPY（list, tuple, dict） +++++++++++++++++++++++
