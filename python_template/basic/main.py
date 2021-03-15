@@ -131,6 +131,8 @@ def execute():
     log_add_line(1)
 
     # 期間 
+    # timedeltaは日付計算時に利用する。
+    # years,months,days,minitus,seconds,microseconds
     log(' -期間')
     break_span = datetime.timedelta(seconds=3)
     break_time = now + break_span
@@ -269,6 +271,12 @@ def execute():
 
         # with句  +++++++++++++++++++++++
         import basic.with_sample
+
+        # クラス  +++++++++++++++++++++++
+        import basic.class_sample
+
+        # Shell
+        import basic.shell
 
 
     # プログラム終了 +++++++++++++++++++++++

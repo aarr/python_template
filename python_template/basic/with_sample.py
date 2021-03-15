@@ -23,6 +23,7 @@ class WithTest():
         log('exception_type:{0}, exception_value:{1}, traceback:{2}'.format(
             exception_type, exception_value, traceback))
         log('--- end ---')
+        log_add_line()
         return self
 
 with WithTest('WITH TEST') as with_test:

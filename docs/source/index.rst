@@ -282,3 +282,9 @@ AWS lambda
          :caption: aws-cliの場合
 
          $ aws lambda update-function-code --function-name lambda_hander_name --zip-file fileb://function.zip
+
+
+Coding
+---------------------------
+ | Pythonのコーディングについて
+ | :doc:`Coding<coding>`

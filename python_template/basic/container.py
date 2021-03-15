@@ -178,6 +178,13 @@ dict_sample.update(dict_update)
 log('UPDATED DICTONAIRY', dict_sample)
 log_add_line(1)
 
+# ＞sorted
+# Valueの値でソートし、降順にする
+log(' -sorted')
+dict_sorted = sorted(dict_sample, key=dict_sample.get, reverse=True)
+log('SORTED DICTONAIRY', dict_sorted)
+log_add_line(1)
+
 # ＞dict#setdefault
 # キーが存在しない場合のみ追加を行う
 log(' - dict#setdefault')
@@ -195,6 +202,15 @@ log('同じ結果(pprint.pformat):')
 log(pprint.pformat(count))
 log_add_line(1)
 
+# ＞defaultdict
+log(' - collections#defaultdict')
+from collections import defaultdict
+d = defaultdict(int)
+s = 'hoasdfjawefasdf'
+for c in s:
+    d[c] += 1
+log('DEFAULTDICT(文字カウント）', d)
+log_add_line(1)
 
 # ＞辞書内包表記
 log('＞辞書内包表記')

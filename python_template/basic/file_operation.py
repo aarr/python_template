@@ -134,5 +134,35 @@ def main():
     log('AFTER IMPORT(0)', sample_data_formatted[1], title_space=20)
     log_add_line()
 
-if __name__ == '__main__':
-    main()
+
+    # ファイル SEEK CHUNK +++++++++++++++++++++++
+    log('>ファイル読み込み箇所指定、読み込み量指定')
+    # 10文字目から10文字読み込む
+    seek(file_path_test, 10, 10)
+    log_add_line()
+
+
+    # CSV +++++++++++++++++++++++
+    log('>CSV書き込み')
+    import csv
+    csv_test_dir = os.path.join(work_dir, 'csv_test')
+    makedir(csv_test_dir)
+    csv_file_path = os.path.join(csv_test_dir, 'TEST.csv')
+    with open(csv_file_path, 'w+') as csv_file:
+        fieldnames = ['Name', 'Count']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow({'Name' : 'A', 'Count' : 1})
+        writer.writerow({'Name' : 'B', 'Count' : 10})
+        log('CSV CONTENT', csv_file.read())
+        seek(csv_file_path, 0)
+    log_add_line(1)
+    
+    log('>CSV読み込み')
+    with open(csv_file_path, 'r') as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            log('READ CSV ROW', row)
+            log('READ CSV ROW[Name]', row['Name'])
+            log('READ CSV ROW[Count]', row['Count'])
+    log_add_line()

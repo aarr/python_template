@@ -1,5 +1,5 @@
 # file_manager.py
-'''ファイル、ディレクトリ操作機能
+'''ファイル、ディレクトリ操作Utility
 '''
 import sys, os,shelve, shutil
 
@@ -111,3 +111,15 @@ def remove_line_separator(line):
     _line = str(line)
     # 3項演算子
     return _line.strip('\n').strip('\r') if line != None else line;
+
+def seek(file_path, point, chunk=0): 
+    """読み込みポイントを指定可能
+    Aargs
+        file_path(str): 読み込みファイル
+        point(int): 読み込み開始ポイント
+        chunk(int): 読み込み量
+    """
+    with open(file_path, 'r') as file:
+        file.seek(point)
+        log('POINT:{}, CHUNK:{}'.format(point, chunk if chunk != 0 else 'ALL'), file.read(chunk) if chunk != 0 else file.read())
+
