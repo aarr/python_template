@@ -182,3 +182,6 @@ with tempfile.TemporaryDirectory() as td:
     log('TEMP DIRECTORY', td)
 log('TEMP DIRECTORY EXISTS', os.path.exists(td))
 log_add_line(2)
+
+# 最後に元のディレクトリに移動
+os.chdir(current_dir)
