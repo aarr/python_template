@@ -46,7 +46,7 @@ def execute():
     num = 10
     string = "10"
     # 明示的に型宣言をしたい場合
-    sTring : string = "11"
+    sTring: string = "11"
     null = None
 
     # 型変換 +++++++++++++++++++++++
