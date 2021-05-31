@@ -243,7 +243,7 @@ log_add_line(1)
 # copyモジュールのインポートが必要
 log("＞COPY(list, tuple, dict) ---------------")
 list_copy_target = ['A', 'B', 'C', 'D']
-dict_copy_target = {'A': 1, 'B' : 2}
+dict_copy_target = {'A': 1, 'B': 2}
 list_copy = copy.copy(list_copy_target)
 dict_copy = copy.copy(dict_copy_target)
 # 編集

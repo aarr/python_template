@@ -54,7 +54,8 @@ thread1 = threading.Thread(target=func, args=['Thread1', 3])
 log('Thread1 up')
 thread1.start()
 # Thread2開始
-thread2 = threading.Thread(target=func, args=['Thread2', 5], kwargs={'interval' : 2})
+thread2 = threading.Thread(target=func, args=['Thread2', 5],
+                           kwargs={'interval': 2})
 log('Thread2 up')
 thread2.start()
 log('thread running complete')

@@ -43,7 +43,7 @@ log_add_line(1)
 # ShellInjectionを回避しつつ、パイプを利用する場合
 log('EXECUTE SHELL(Pattern3)', 'PIPE利用')
 p1 = subprocess.Popen(['ls', '-al'], stdout=subprocess.PIPE)
-p2 = subprocess.Popen(['grep', 'python'], 
+p2 = subprocess.Popen(['grep', 'python'],
                       stdin=p1.stdout, stdout=subprocess.PIPE)
 p1.stdout.close()
 result = p2.communicate()[0]
