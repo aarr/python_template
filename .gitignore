@@ -4,3 +4,4 @@ python_template/basic/pprint_test_data.py
 python_template/log/
 python_template/__pycache__/
 python_template/*/__pycache__/
+*.DS_Store

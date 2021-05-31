@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-# container.py
-# 
-
 """ コンテナ型
 コンテナ型サンプル集
 """
+import copy
+import pprint
+import collections
 
-from com.console import *
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
 
 # 複数のオブジェクトを格納できるデータ構造
 # コンテナ型
@@ -30,7 +33,7 @@ log("LIST1 ELEM(LAST)",  list_first_half[-1])
 # ＞範囲指定
 # X:Y -> Xは含む。Yは含まない。いずれも省略可能
 list_part = list_first_half[1:3]
-log("LIST1 CUT ELEM NUM",  str(len(list_part))) 
+log("LIST1 CUT ELEM NUM",  str(len(list_part)))
 log("LSIT1 CUT ELEM(0,1)", list_part[0], list_part[1], sep=",")
 
 # ＞リスト連結
@@ -44,13 +47,15 @@ log("LIST 3TIMES", list_tripple)
 # ＞要素削除
 # delは変数の削除にも利用できるが、殆どの場合リストの要素削除に使われる
 log("LIST 3TIMES SIZE",  str(len(list_tripple)))
-del list_tripple[10:] # 10要素以降を削除
+# 10要素以降を削除
+del list_tripple[10:]
 log("LIST DEL AF DEL",  str(len(list_tripple)))
 # 要素存在確認（in / not in）
 contains_1 = "1" in list_first_half
 log("CONTAINS str(1)",  str(contains_1))
 contains_num1 = 1 in list_first_half
-log("CONTAINS int(1)",  str(contains_num1)) # 型が異なると含まれないと判断される
+# 型が異なると含まれないと判断される
+log("CONTAINS int(1)", str(contains_num1))
 contains_1 = "6" in list_first_half
 log("CONTAINS str(6)",  str(contains_1))
 
@@ -69,13 +74,17 @@ log_add_line(1)
 
 # ＞リスト提供メソッド
 log("＞リスト提供メソッド ---------------")
-list_sum.append("11")           # 操作対象のリストに要素を追加する
-list_sum.extend(["0", "-10"])   # + の場合、コピーされ新たなリストが作成される。extendは操作対象のリストに指定されたリストを追加する 
-list_sum.remove("1")            # delは要素番号を指定して削除、removeは要素値を指定して削除
+# 操作対象のリストに要素を追加する
+list_sum.append("11")
+# + の場合、コピーされ新たなリストが作成される。extendは操作対象のリストに指定されたリストを追加する
+list_sum.extend(["0", "-10"])
+# delは要素番号を指定して削除、removeは要素値を指定して削除
+list_sum.remove("1")
 log("WHAT NUM(2)",  str(list_sum.index("2")))
 log("操作後リスト", list_sum)
 log("WHAT NUM(8 :5 - 10)",  str(list_sum.index("8", 5, 10)))
-log('INDEX(7)', list_sum.index('7')) # 何番目の要素にあるか検索
+# 何番目の要素にあるか検索
+log('INDEX(7)', list_sum.index('7'))
 
 list_sum.sort()
 log("LIST SORTED", list_sum)
@@ -84,7 +93,7 @@ list_sum.sort(reverse=True)
 log("LIST SORTED（REVERSE）", list_sum)
 
 # 引数でソートロジックを指定可能（数値ソートにした）
-list_sum.sort(key=lambda elem : int(elem))
+list_sum.sort(key=lambda elem: int(elem))
 log("LIST SORTED（KEY）", list_sum)
 
 # sortedは新しいリストを生成
@@ -98,8 +107,8 @@ log("＞リスト内包表記 ---------------")
 # メモリを使わないので早いと言われている
 # 複数のfor文を記載することも可能だが、可読性が下がるためfor文1つ、if文1つぐらいなら良いだろう
 t = (1, 2, 3, 4, 5)
-l = [i for i in t if i % 2 == 0]
-log('リスト内容', l)
+lst = [i for i in t if i % 2 == 0]
+log('リスト内容', lst)
 log_add_line(1)
 
 
@@ -113,13 +122,16 @@ log_add_line(1)
 # ＞タプル
 # 文字列同様イミュータブル（不変）
 log("＞tuple(シーケンシャル型) ---------------")
-def editList(target, index, value) :
+
+
+def editList(target, index, value):
     try:
         target[index] = value
-    except TypeError as exception : 
+    except TypeError as exception:
         log("ERROR UPDATE", exception)
-    else :
+    else:
         log("COMP UPDATE", target)
+
 
 tuple_like_list = (12, "34", None)
 log(tuple_like_list, "ELEM(3):", tuple_like_list[2], title_sep=' -> ')
@@ -140,7 +152,7 @@ log_add_line()
 
 # 辞書型（dict） +++++++++++++++++++++++
 log("＞辞書型（dict） ---------------")
-dict_sample = {'key1' : 1, 'key2' : 2, 'key3' : 3}
+dict_sample = {'key1': 1, 'key2': 2, 'key3': 3}
 log('DICTIONARY', dict_sample)
 log_add_line(1)
 
@@ -172,7 +184,7 @@ log_add_line(1)
 
 # ＞dict#update
 log(' - dict#update')
-dict_update = {'key1' : 10, 'key10' : 4}
+dict_update = {'key1': 10, 'key10': 4}
 # dict_sampleが更新される
 dict_sample.update(dict_update)
 log('UPDATED DICTONAIRY', dict_sample)
@@ -195,7 +207,6 @@ for char in numStr:
     count[char] = count[char] + 1
 log('SET DEFAULT(文字カウント)(pprint.pprint):')
 # pprintを利用すると、内容をソートして表示することが可能
-import pprint
 # pprint.pprint(count) # 標準出力に表示
 # 文字列として取得したい場合は、pprint#pformatで取得可能
 log('同じ結果(pprint.pformat):')
@@ -204,8 +215,7 @@ log_add_line(1)
 
 # ＞defaultdict
 log(' - collections#defaultdict')
-from collections import defaultdict
-d = defaultdict(int)
+d = collections.defaultdict(int)
 s = 'hoasdfjawefasdf'
 for c in s:
     d[c] += 1
@@ -232,7 +242,6 @@ log_add_line(1)
 # COPY（list, tuple, dict） +++++++++++++++++++++++
 # copyモジュールのインポートが必要
 log("＞COPY(list, tuple, dict) ---------------")
-import copy
 list_copy_target = ['A', 'B', 'C', 'D']
 dict_copy_target = {'A': 1, 'B' : 2}
 list_copy = copy.copy(list_copy_target)
@@ -248,7 +257,7 @@ log_add_line(1)
 
 # ＞リスト/タプルのDEEP COPY
 log("＞DEEP COPY(list, tuple, dict) ---------------")
-list2d_deep_copy_target = [[1,2,3], ['A', 'B', 'C']]
+list2d_deep_copy_target = [[1, 2, 3], ['A', 'B', 'C']]
 list2d_copy = copy.copy(list2d_deep_copy_target)
 list2d_deep_copy = copy.deepcopy(list2d_deep_copy_target)
 # 編集

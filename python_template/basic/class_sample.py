@@ -1,47 +1,85 @@
 #!/usr/bin/env python3
 """ClassSample
 """
+import abc
 
-from com.console import *
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
+
 log('#============================')
 log('# Classサンプル')
 log('#============================')
 log("＞Class---------------")
+
+
 class Person(object):
+    """Personクラス
+
+    Args:
+        object (object): オブジェクト
+    """
     def __init__(self, first_name, last_name):
-        """コンストラクタ"""
+        """コンストラクタ
+
+        Args:
+            first_name (str): 名字
+            last_name (str): 名前
+        """
         self.first_name = first_name
         # プロパティ化するフィールドは「_」をつける
         self._last_name = last_name
         self.__original_last_name = last_name
-    
+
     def say_something(self):
+        """say something"""
         log('I am {}. hello'.format(self.first_name))
-    
-    def run(self, num):
+
+    def run(self):
         log('{} run'.format(self.first_name))
-    
+
     @property
     def last_name(self):
+        """名前取得
+
+        Returns:
+            str: 名前
+        """
         return self._last_name
-    
+
     @last_name.setter
     def last_name(self, new_last_name):
+        """名前設定
+
+        Args:
+            new_last_name (str): 名前
+
+        Raises:
+            ValueError: 複数可名前変更した際に発生
+        """
         if self.__original_last_name == self._last_name:
             self._last_name = new_last_name
         else:
             raise ValueError('苗字変更は1回まで')
-    
+
     @property
     def original_last_name(self):
+        """オリジナル名前取得
+
+        Returns:
+            str: オリジナル名前
+        """
         return self.__original_last_name
-    
+
     def __del__(self):
         """デストラクタ
         インスタンスが破棄される際に実行される
         明示的にdelされるか、処理の最後
         """
         log('good bay. {}'.format(self.first_name))
+
+
 
 log('CLASS', 'start')
 messi = Person('Messi', 'Lionel')
@@ -57,14 +95,28 @@ log_add_line(1)
 
 log("＞Class extends---------------")
 class SuperMan(Person):
+    """スーパーマンクラス
+
+    Args:
+        Person (Person): Personクラス
+    """
     def __init__(self, first_name, last_name, weapon):
+        """コンストラクタ
+
+        Args:
+            first_name (str): 名字
+            last_name (str): 名前
+            weapon (str): 武器名
+        """
         super().__init__(first_name, last_name)
         self.weapon = weapon
 
     def fly(self):
+        """飛行"""
         log('{} fly'.format(self.first_name))
-    
+
     def attack(self):
+        """攻撃"""
         log('{} attack with {}'.format(self.first_name, self.weapon))
 
 kent = SuperMan('Kent', 'Clark', 'BEAM')
@@ -99,7 +151,8 @@ except ValueError as error:
 try:
     # 完全にprivateなフィールドを設ける
     # フィールド戦闘を「__」とする
-    log('Cameron\'s original last name is {}'.format(cameron.__original_last_name))
+    log('Cameron\'s original last name is {}'.format(
+        cameron.__original_last_name))
 except Exception as ex:
     log('Exception:{}. {}'.format(type(ex), ex))
     log('original last name is not accessable')
@@ -108,7 +161,8 @@ except Exception as ex:
 # Errorにはならないが、Privateなフィールドへの変更はできない
 cameron.__original_last_name = "Hoge"
 log('Cameron\'s original last name is {}'.format(cameron.original_last_name))
-log('DIRECT ACCESS', 'Cameron\'s original last name is {}'.format(cameron.__original_last_name))
+log('DIRECT ACCESS', 'Cameron\'s original last name is {}'.format(
+    cameron.__original_last_name))
 log(''' 外からPrivateなFiledと同名のFiledに対して値を設定する事は可能。
         self.__xxxで参照する時と、instance.__xxxでアクセスする時で値が異なる状況になり、
         バグを生みやすいので設定しないこと'''
@@ -120,8 +174,6 @@ log("＞AbstractClass---------------")
 # もともとPythonでは抽象クラス、インターフェースという考え方はなかった
 # 使う必要がなければ使う必要はない。
 # コードスタイルではあまり利用しない方が良いとのこと。知っている程度でよい。
-import abc
-
 class AdultPerson(Person, metaclass=abc.ABCMeta):
     """抽象クラス"""
 
@@ -130,16 +182,19 @@ class AdultPerson(Person, metaclass=abc.ABCMeta):
     def drive(self):
         pass
 
+
 class ProSoccerPlayer(AdultPerson):
-    """継承クラス"""
+    """プロサッカー選手"""
     # 必ず指定の関数を実装する
     def drive(self):
         log('{} drive SUPER CAR'.format(self.first_name))
 
+
 class ProBasketPlayer(AdultPerson):
-    """継承クラス"""
+    """プロバスケットボール選手"""
     # 指定されたメソッドを実装しない
     pass
+
 
 # 正常系
 neymal_jr = ProSoccerPlayer('Neymal', 'Silva')
@@ -155,25 +210,42 @@ log_add_line()
 
 log("＞多重継承---------------")
 class ProBaseballPlayer(Person):
-
+    """プロ野球選手"""
     def drive(self):
         log('{} don\'t drive'.format(self.first_name))
 
 
 class Jodan(ProBaseballPlayer, ProBasketPlayer):
+    """マイケル・ジョーダン
+
+    Args:
+        ProBaseballPlayer (ProBaseballPlayer): プロ野球選手
+        ProBasketPlayer (ProBasketPlayer): プロバスケットボール選手
+    """
 
     def __init__(self, sponsor):
+        """コンストラクタ
+
+        Args:
+            sponsor (str): スポンサー
+        """
         super().__init__('Michale', 'Jodan')
         self.__sponsor = sponsor
 
     def drive(self):
+        """運転する"""
         log('Superクラスのdrive呼び出し')
         super().drive()
-    
+
     def new_release(self, model):
+        """新作発表
+
+        Args:
+            model (str): 新作モデル
+        """
         log('{} new release {} by {}'.format(self._last_name, model, self.__sponsor))
-    
-    
+
+
 jodan = Jodan('Nike')
 jodan.drive()
 jodan.new_release('Air Jodan')
@@ -182,16 +254,21 @@ log_add_line()
 
 log("＞クラス変数、メソッド---------------")
 class ClassPerson(object):
+    """クラス変数・メソッド確認用クラス
 
+    Args:
+        object (object): オブジェクト
+    """
+    # クラス変数
     kind = 'human'
 
     def __ini__(self):
         self.x = 100
-    
+
     @classmethod
     def what_is_your_kind(cls):
         return cls.kind
-    
+
     @staticmethod
     def about(year):
         try:
@@ -200,9 +277,9 @@ class ClassPerson(object):
             log('about {} {} '.format(kind, year))
         except NameError as error:
             log(error)
-        
         log('about human {}'.format(year))
-    
+
+
 human = ClassPerson()
 log('Object:KIND:field', human.kind)
 log('Object:KIND:class_method', human.what_is_your_kind())

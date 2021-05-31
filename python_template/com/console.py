@@ -1,46 +1,49 @@
 #!/usr/bin/env python3
-# console.py
-# 
 """Console Logger
 コンソールにログ出力する
 """
-import logging, os
-log_dir = os.path.join(os.path.dirname(__file__), 'log')
+import os
+import logging
+
+LOG_DIR = os.path.join(os.path.dirname(__file__), 'log')
 try:
-    os.makedirs(log_dir)
+    os.makedirs(LOG_DIR)
 except FileExistsError as error:
-    print('log directory is exists : {0}'.format(log_dir))
+    print('log directory is exists : {0}'.format(LOG_DIR))
+    print(error)
 else:
-    print('make log directory : {0}'.format(log_dir))
+    print('make log directory : {0}'.format(LOG_DIR))
 
 logging.basicConfig(
     # ファイル出力の場合コメントアウト解除
-    # filename=os.path.join(log_dir, 'applicationl.log'),
+    # filename=os.path.join(LOG_DIR, 'applicationl.log'),
     # その他のパッケージのログはERROR
     level=logging.ERROR,
-    format= '%(asctime)s[%(levelname)s] %(message)s'
+    format='%(asctime)s[%(levelname)s] %(message)s'
 )
-# basicConfigで設定している内容から、設定を一部変更して利用したい場合loggerを定義する
+# basicConfigで設定している内容から、設定を一部変更して利用したい場合LOGGERを定義する
 # basicConfig通り利用する場合は、定義する必要はない
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+
 
 def debug(message):
     '''debugLog
     '''
-    logger.debug(message)
+    LOGGER.debug(message)
 
 
 def warn(message):
     '''warningLog
     '''
-    logger.warn(message)
+    LOGGER.warn(message)
 
 
 def error(message):
     '''errorLog
     '''
-    logger.error(message)
+    LOGGER.error(message)
+
 
 def disableLogging(level=logging.CRITICAL):
     '''ログの無効化
@@ -48,7 +51,8 @@ def disableLogging(level=logging.CRITICAL):
     logging.disable(level)
 
 
-def format_message(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' '):
+def format_message(title, *messages, spacer=' ', title_space=15,
+                   title_sep=' : ', sep=' '):
     """ メッセージフォーマット
     Args:
         title(str) : タイトル。指定が必須
@@ -60,7 +64,8 @@ def format_message(title, *messages, spacer=' ', title_space=15, title_sep=' : '
         str : フォーマット済み文字列
 
     Examples:
-    >>> console.format_message('タイトル', '表示内容１', '表示内容２', title_space=10, title_sep=' | ', sep=' ')
+    >>> console.format_message('タイトル', '表示内容１', '表示内容２',
+                               title_space=10, title_sep=' | ', sep=' ')
     タイトル       | 表示内容１ 表示内容２
 
     """
@@ -71,11 +76,12 @@ def format_message(title, *messages, spacer=' ', title_space=15, title_sep=' : '
     elif _message_length > 1:
         # mapにてmessagesの中身をすべて文字列にする
         _message = sep.join(map(str, messages))
-    _message = str(title).ljust(title_space, spacer) + title_sep + str(_message) if (_message != None) else str(title)
+    _message = str(title).ljust(title_space, spacer) + title_sep + str(_message) if (_message is not None) else str(title)
     return _message
 
 
-def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', end='\n'):
+def log(title, *messages, spacer=' ', title_space=15,
+        title_sep=' : ', sep=' ', end='\n'):
     """ コンソールログ出力
     Args:
         title(str) : タイトル。指定が必須
@@ -86,24 +92,28 @@ def log(title, *messages, spacer=' ', title_space=15, title_sep=' : ', sep=' ', 
         end(str, optional) : 表示内容の最後に付与する文字
 
     Examples:
-    >>> console.log('タイトル', '表示内容１', '表示内容２', title_space=10, title_sep=' | ', sep=' ')
+    >>> console.log('タイトル', '表示内容１', '表示内容２',
+                     title_space=10, title_sep=' | ', sep=' ')
     タイトル       | 表示内容１ 表示内容２
 
     """
     # *messagesで、format_messageにわたすことで、tupleを展開して渡すことが可能
     # messagesで渡すとtupleの入れ子になる。
-    #print(format_message(title, *messages, spacer=spacer, title_space=title_space, title_sep=title_sep, sep=sep), end=end)
-    debug(format_message(title, *messages, spacer=spacer, title_space=title_space, title_sep=title_sep, sep=sep))
+    # print(format_message(title, *messages, spacer=spacer,
+    #       title_space=title_space, title_sep=title_sep, sep=sep), end=end)
+    debug(format_message(title, *messages,
+                         spacer=spacer, title_space=title_space,
+                         title_sep=title_sep, sep=sep))
 
 
-def log_add_line(count=2) :
+def log_add_line(count=2):
     """ 改行指定
     Args:
         count(int, optional) : 指定数文の改行をコンソールログ出力する。
     """
-    indentStr = '' 
+    indentStr = ''
     # printで通常１つ改行が含まれるため、-１する
-    for i in range(count) :
+    for i in range(count):
         # indentStr = indentStr + '\n'
         debug(indentStr)
-    #print(indentStr)
+    # print(indentStr)

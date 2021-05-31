@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
-# file.py
-
 """ ファイル
 ファイル操作サンプル集
 """
 
 import os
-from com.console import *
-from com.file_manager import *
+import pprint
+
+import basic.pprint_test_data as pprint_test_data
+import com.console
+import com.file_manager as fm
+
+log = com.console.log
+log_add_line = com.console.log_add_line
+
 
 def main():
     log('#============================')
@@ -26,10 +31,10 @@ def main():
     log('HOME DIR', home_dir)
     log_add_line(1)
     # 場所移動
-    current_dir = os.getcwd();
+    current_dir = os.getcwd()
     dir_script = os.path.abspath(__file__)
     os.chdir(home_dir)
-    log('CHANGE DIRECTORY -> ' + home_dir) 
+    log('CHANGE DIRECTORY -> ' + home_dir)
     log('CURRENT DIR', os.getcwd())
 
     # ディレクトリを移動するとimportする際のサーチパスが変わってしまう。
@@ -43,9 +48,9 @@ def main():
     log(' - ディレクトリ作成')
     work_dir = os.path.join(home_dir, 'work_python')
     # 一度ワークディレクトリ削除
-    remove(work_dir)
+    fm.remove(work_dir)
     worK_dir_test_makedir = os.path.join(work_dir, 'makedirs_test')
-    makedir(worK_dir_test_makedir)
+    fm.makedir(worK_dir_test_makedir)
     log('WORK DIR', worK_dir_test_makedir)
     log_add_line(1)
 
@@ -75,89 +80,81 @@ def main():
     log('IS DIR', os.path.isdir(worK_dir_test_makedir))
     log_add_line()
 
-
     # ファイル読込／書込 +++++++++++++++++++++++
     log('>ファイル読込／書き込み')
     file_path_test_dir = os.path.join(work_dir, 'file_test')
-    makedir(file_path_test_dir)
+    fm.makedir(file_path_test_dir)
     file_path_test = os.path.join(file_path_test_dir, 'TEST.txt')
-
 
     # ファイル書込
     # w：書込（新規）
     # a：書込（追記）
     log(' - write(w)')
-    write_file(file_path_test, 'w', 'write file w mode\nnew line\n')
+    fm.write_file(file_path_test, 'w', 'write file w mode\nnew line\n')
     log_add_line(1)
     log(' - write(a)')
-    write_file(file_path_test, 'a', 'write file a mode\nadd line\nadd line\n')
+    fm.write_file(file_path_test, 'a',
+                  'write file a mode\nadd line\nadd line\n')
     log_add_line(1)
-
 
     # ファイル読込
     log(' - read')
-    read_file(file_path_test)
+    fm.read_file(file_path_test)
     log(' - readline')
-    readline_file(file_path_test)
+    fm.readline_file(file_path_test)
     log(' - readlines')
-    readlines_file(file_path_test)
+    fm.readlines_file(file_path_test)
     log_add_line(1)
-
 
     # shelve（シェルフ：棚） +++++++++++++++++++++++
     # バイナリファイルとして一時的に保存が可能
     # shelveパッケージをインポートして利用する
     log(' - shelve')
-    save_shelve('condition', {'key1' : 1, 'key2' : 10})
-    condition = get_shelve('condition')
+    fm.save_shelve('condition', {'key1': 1, 'key2': 10})
+    condition = fm.get_shelve('condition')
     log('SHELVE', condition)
     log_add_line()
-
 
     # pprint.pformat +++++++++++++++++++++++
     # Pythonでそのまま利用できる形でファイル保存が可能
     log(' - pprint.pformat -> file')
-    import pprint
-    sample_data = [{'key1' : 'value1'}, {'key2' : 'value2', 'key3' : 'value3'}]
+    sample_data = [{'key1': 'value1'}, {'key2': 'value2', 'key3': 'value3'}]
     # 後にimportするため、change directoryする前のスクリプト実行ディレクトリに配置する
     content_formated = 'sample_data_formatted = ' + pprint.pformat(sample_data) + ';\n'
     log('PPRINT.PFORMAT', content_formated)
     # このファイルを後ほどimportする
     filepath_format_test = os.path.dirname(dir_script) + '/pprint_test_data.py'
-    write_file(filepath_format_test, 'w', content_formated)
+    fm.write_file(filepath_format_test, 'w', content_formated)
     log('import pprint.pformat file')
     # TODO 関数ないでインポートしたいがエラーとなる。要確認
-    import basic.pprint_test_data as pprint_test_data
     sample_data_formatted = pprint_test_data.sample_data_formatted
     log('AFTER IMPORT(ALL)', sample_data_formatted, title_space=20)
     log('AFTER IMPORT(0)', sample_data_formatted[0], title_space=20)
     log('AFTER IMPORT(0)', sample_data_formatted[1], title_space=20)
     log_add_line()
 
-
     # ファイル SEEK CHUNK +++++++++++++++++++++++
     log('>ファイル読み込み箇所指定、読み込み量指定')
     # 10文字目から10文字読み込む
-    seek(file_path_test, 10, 10)
+    fm.seek(file_path_test, 10, 10)
     log_add_line()
-
 
     # CSV +++++++++++++++++++++++
     log('>CSV書き込み')
     import csv
     csv_test_dir = os.path.join(work_dir, 'csv_test')
-    makedir(csv_test_dir)
+    fm.makedir(csv_test_dir)
     csv_file_path = os.path.join(csv_test_dir, 'TEST.csv')
     with open(csv_file_path, 'w+') as csv_file:
         fieldnames = ['Name', 'Count']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerow({'Name' : 'A', 'Count' : 1})
-        writer.writerow({'Name' : 'B', 'Count' : 10})
+        writer.writerow({'Name': 'A', 'Count': 1})
+        writer.writerow({'Name': 'B', 'Count': 10})
         log('CSV CONTENT', csv_file.read())
-        seek(csv_file_path, 0)
+        fm.seek(csv_file_path, 0)
     log_add_line(1)
-    
+
     log('>CSV読み込み')
     with open(csv_file_path, 'r') as csv_file:
         reader = csv.DictReader(csv_file)

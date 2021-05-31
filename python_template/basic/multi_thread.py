@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
-# multi_thread.py
-'''マルチスレッド
-'''
+'''マルチスレッド'''
+import datetime
+import time
+import threading
 
-from console import *
-import threading, datetime, time
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
+
 log('#============================')
 log('# Multi Thread')
 log('#============================')
 log('MultiThread start')
 
+
 def func(thread_name, running_time, interval=1):
-    '''MultiThreadテスト用関数
-    sleepしてログ出力するのみ
-    '''
-    log('NAME:{0} start'.format(thread_name, running_time))
+    """MultiTreadテスト用関数
+    Sleepしてログ出力するのみ
+
+    Args:
+        thread_name (str): スレッド名
+        running_time (int): 実行時間
+        interval (int, optional): インターバル. Defaults to 1.
+    """
+    log('NAME:{0} start'.format(thread_name))
 
     now = datetime.datetime.now()
     break_span = datetime.timedelta(seconds=running_time)
@@ -23,8 +33,9 @@ def func(thread_name, running_time, interval=1):
         time.sleep(interval)
         log('{0} running...'.format(thread_name))
 
-    log('NAME:{0} end'.format(thread_name, running_time))
+    log('NAME:{0} end'.format(thread_name))
     log_add_line(1)
+
 
 log('Thread機動')
 log(' EX) threading.Threa(target=func, args=[], kwargs={})')

@@ -5,7 +5,11 @@
 
 import subprocess
 
-from com.console import *
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
+
 
 # =========================================================
 # シェルコマンド実行
@@ -25,7 +29,7 @@ log_add_line(1)
 # =========================================================
 log('EXECUTE SHELL(Error)', 'lsxxx -al')
 result = subprocess.run('lsxxx -la', shell=True)
-# returnCodeで後続処理のハンドリングを行う 
+# returnCodeで後続処理のハンドリングを行う
 log('RETURN CODE', result.returncode)
 # もしくはcheck=Trueとして、エラーを発生させる
 try:
@@ -39,7 +43,8 @@ log_add_line(1)
 # ShellInjectionを回避しつつ、パイプを利用する場合
 log('EXECUTE SHELL(Pattern3)', 'PIPE利用')
 p1 = subprocess.Popen(['ls', '-al'], stdout=subprocess.PIPE)
-p2 = subprocess.Popen(['grep', 'python'], stdin=p1.stdout, stdout=subprocess.PIPE)
+p2 = subprocess.Popen(['grep', 'python'], 
+                      stdin=p1.stdout, stdout=subprocess.PIPE)
 p1.stdout.close()
 result = p2.communicate()[0]
 log('RESULT', result)

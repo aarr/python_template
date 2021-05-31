@@ -5,8 +5,12 @@
 """ 文字列操作
 文字列操作サンプル集
 """
+import pyperclip
 
-from com.console import *
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
 
 # シングルクォーテーション、ダブルクォーテーションいずれでもよい
 log('#============================')
@@ -69,8 +73,6 @@ log('LSTRIP', string_strip.lstrip('hoge'))
 string_format = '{0} is {1}'
 log('FORMAT', string_format.format('123', 'number'))
 # クリップボード
-import pyperclip
 pyperclip.copy('CLIPBOARD COPY')
 log('CLIPBOARD PASTE', pyperclip.paste())
-
 log_add_line()

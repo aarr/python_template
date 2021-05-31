@@ -1,31 +1,39 @@
 #!/usr/bin/env python3
-# file_control.py
-
 """ ファイル
 ファイル・ディレクトリの作成は情報取得
 """
+import glob
+import os
+import shutil
+import tarfile
+import tempfile
+import pathlib
+import zipfile
 
-from com.console import *
-import basic.file_operation as file_operation, send2trash
+# TODO https://github.com/arsenetar/send2trash/issues/51
+# import send2trash
+
+import com.console
 import com.file_manager as fm
+
+log = com.console.log
+log_add_line = com.console.log_add_line
 
 log('#============================')
 log('# ファイル管理')
 log('#============================')
-import shutil ,os
-
 home_dir = os.path.expanduser('~')
 base_work_dir = os.path.join(home_dir, 'work_python')
 work_dir = os.path.join(base_work_dir, 'file_control')
 # 一度workディレクトリを削除
-file_operation.remove(work_dir)
+fm.remove(work_dir)
 
 # ファイルコピー
 log(' - copy')
 copy_test_file = os.path.join(work_dir, 'copy_target.txt')
 copied_file = os.path.join(work_dir, 'copied.txt')
-file_operation.makedir(work_dir)
-file_operation.write_file(copy_test_file, 'w')
+fm.makedir(work_dir)
+fm.write_file(copy_test_file, 'w')
 shutil.copy(copy_test_file, copied_file)
 log_add_line(1)
 
@@ -40,19 +48,19 @@ log_add_line(1)
 log(' - move')
 move_test_path = os.path.join(work_dir, 'move_test')
 move_test_file = os.path.join(work_dir, 'move.txt')
-file_operation.write_file(move_test_file, 'w')
-file_operation.makedir(move_test_path)
+fm.write_file(move_test_file, 'w')
+fm.makedir(move_test_path)
 shutil.move(move_test_file, move_test_path)
 log('MOVE', '{0} -> {1}'.format(move_test_file, move_test_path))
 log_add_line(1)
 
 # ゴミ箱移動
-log(' - send to trash')
-trash_test_file = os.path.join(work_dir, 'trash_test_file')
-file_operation.write_file(trash_test_file, 'a', 'trash data')
-send2trash.send2trash(trash_test_file)
-log('SEND2TRASH', trash_test_file)
-log_add_line(1)
+# log(' - send to trash')
+# trash_test_file = os.path.join(work_dir, 'trash_test_file')
+# fm.write_file(trash_test_file, 'a', 'trash data')
+# send2trash.send2trash(trash_test_file)
+# log('SEND2TRASH', trash_test_file)
+# log_add_line(1)
 
 # ディレクトリツリー渡り歩き
 log(' - walk')
@@ -68,9 +76,6 @@ for foldername, subfolders, filenames in os.walk(base_work_dir):
 # =========================================================
 # ファイル操作ライブラリ
 # ファイル作成、作成したディレクトリ内の情報確認
-import pathlib
-import glob
-
 log(' - pathlib:touch')
 # 空ファイルが簡単に作成できる。Python3から導入。それ以前はファイルのOpenなどしなければ行けなかった。
 pathlib_test_dir = os.path.join(work_dir, 'filelib')
@@ -88,15 +93,13 @@ log_add_line(1)
 
 # =========================================================
 # tarファイル作成／解凍
-import tarfile
-
 compress_test_dir = os.path.join(work_dir, 'compressTest')
 os.mkdir(compress_test_dir)
 compress_test_file_path = os.path.join(compress_test_dir, 'content1.txt')
 # ファイル作成、COPY
 pathlib.Path(compress_test_file_path).touch()
-shutil.copy(os.path.join(compress_test_dir, 'content1.txt')
-            ,os.path.join(compress_test_dir, 'content2.txt'))
+shutil.copy(os.path.join(compress_test_dir, 'content1.txt'),
+            os.path.join(compress_test_dir, 'content2.txt'))
 log('TAR TARGET', glob.glob(os.path.join(compress_test_dir, '*')))
 fm.write_file(compress_test_file_path, 'w', 'Tar Compress Test')
 
@@ -127,8 +130,6 @@ log_add_line(1)
 
 # =========================================================
 # zipファイル作成／解凍
-import zipfile
-
 # zip作成
 log(' - compress zip')
 zip_path = os.path.join(compress_test_dir, 'test.zip')
@@ -153,16 +154,14 @@ log_add_line(1)
 
 # =========================================================
 # tempファイル
-import tempfile
-
 # 使い終わったら削除してくれる
-#　作業用のファイルとして利用が可能
+# 作業用のファイルとして利用が可能
 log(' - make tempfile')
 with tempfile.TemporaryFile(mode='w+') as tf:
     tf.write('temp content')
     tf.seek(0)
     log('TEMP FILE CONTENT', tf.read())
-    
+
 # ファイルを残すことも可能
 log(' - make tempfile(not delete)')
 with tempfile.NamedTemporaryFile(delete=False) as tf:
@@ -175,7 +174,7 @@ with tempfile.NamedTemporaryFile(delete=False) as tf:
 # ファイルが消されておらず、残っていることが確認できる
 log('TEMP FILE EXISTS', os.path.exists(temp_file_path))
 
-# tempDirectory作成 
+# tempDirectory作成
 # 使い終わったら削除される
 log(' - make tempDirectory')
 with tempfile.TemporaryDirectory() as td:

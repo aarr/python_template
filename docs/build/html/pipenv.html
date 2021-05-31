@@ -34,22 +34,58 @@
   <div class="section" id="pipenv">
 <h1>pipenv<a class="headerlink" href="#pipenv" title="このヘッドラインへのパーマリンク">¶</a></h1>
 <div class="section" id="id1">
-<h2>設定<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<h2>概要<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ライブラリの依存関係を扱うツール
+Pipfileというパッケージを管理するファイル
+Pipfile.lockという依存関係を管理するファイル
+で定義される</p>
+<ol class="arabic">
+<li><p>その他競合ツール</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Poetry</dt><dd><p>パッケージングする際に記述していた、setup.pyやsetup.cfg、MANIFEST.inなども
+１つのファイル（pyproject.toml）に記載することができる</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Pyflow</dt><dd><p>Pipenv/PoetryがPyenv＋venvで１つのPythonバージョン、仮想環境を管理するのに対して
+単体で複数のPythonのバージョンを管理し、指定のバージョンで仮想環境を作ることが可能。
+RUSTで実装されている、パフォーマンスや言語普及の観点から懸念あり。</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>distutils, setuptools, pip</dt><dd><p>distutilsは標準パッケージに用意されたパッケージングツール
+distutilsを拡張したsetuptools。人気を博した。PyPAにより開発された。
+またPyPAにより、setuptoolsを拡張したpipが開発され、デファクトとなった。</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>設定<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <ol class="arabic">
 <li><p>Pipfile作成</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">パッケージインストール時に、Pipfileに情報を保存</span><a class="headerlink" href="#id4" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">パッケージインストール時に、Pipfileに情報を保存</span><a class="headerlink" href="#id7" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv install requests  <span class="c1"># pip installと完全に互換性あり</span>
 </pre></div>
 </div>
 </div>
+<p>ただし.setup.pyを用意している場合、その中でimportしているライブラリを先にinstallしないとlock Faildでエラーとなる</p>
 </div></blockquote>
 </li>
 <li><p>実行</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">main.py（インストールしたパッケージを利用したスクリプト）</span><a class="headerlink" href="#id5" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">main.py（インストールしたパッケージを利用したスクリプト）</span><a class="headerlink" href="#id8" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://httpbin.org/ip&#39;</span><span class="p">)</span>
@@ -57,8 +93,8 @@
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">実行</span><a class="headerlink" href="#id6" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">実行</span><a class="headerlink" href="#id9" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># runは仮想環境を有効にして、実行を行う</span>
 $ pipenv run python main.py
 
@@ -75,8 +111,8 @@ $ pipenv shell
 </li>
 <li><p>既存Pipfile、Pipfile.lockを利用した環境構築</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">最新バージョンを取得：Pipfileのpackagesで定義されている最新バージョンをインストール</span><a class="headerlink" href="#id7" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">最新バージョンを取得：Pipfileのpackagesで定義されている最新バージョンをインストール</span><a class="headerlink" href="#id10" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv install         <span class="c1"># パッケージ名を未指定</span>
 $ pipenv install --dev   <span class="c1"># 特定ステージング用のpackages定義をインストール</span>
 
@@ -85,8 +121,8 @@ $ pipenv install --python PATH
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">特定バージョンを取得：Pipfile.lockに記載されているバージョンをインストール</span><a class="headerlink" href="#id8" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">特定バージョンを取得：Pipfile.lockに記載されているバージョンをインストール</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv sync
 </pre></div>
 </div>
@@ -95,14 +131,14 @@ $ pipenv install --python PATH
 </li>
 <li><p>パッケージのバージョンアップ</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">変更のあったパッケージを確認する</span><a class="headerlink" href="#id9" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">変更のあったパッケージを確認する</span><a class="headerlink" href="#id12" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv update --outdated
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">パッケージの更新</span><a class="headerlink" href="#id10" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">パッケージの更新</span><a class="headerlink" href="#id13" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv update                 <span class="c1"># 全パッケージ</span>
 $ pipenv update &lt;package_name&gt;  <span class="c1"># 特定パッケージのみ</span>
 </pre></div>
@@ -112,14 +148,14 @@ $ pipenv update &lt;package_name&gt;  <span class="c1"># 特定パッケージ�
 </li>
 <li><p>ステージング毎のパッケージ管理</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">検証環境のみインストールしたい場合</span><a class="headerlink" href="#id11" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">検証環境のみインストールしたい場合</span><a class="headerlink" href="#id14" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv install --dev pytest
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">Pipfile</span><a class="headerlink" href="#id12" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Pipfile</span><a class="headerlink" href="#id15" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[dev-packages]
 pytest = &quot;*&quot;
 
@@ -133,16 +169,16 @@ requests = &quot;*&quot;
 </li>
 <li><p>スクリプト登録/実行</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">Pipfile：スクリプトを登録しておくことが可能</span><a class="headerlink" href="#id13" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Pipfile：スクリプトを登録しておくことが可能</span><a class="headerlink" href="#id16" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[scripts]
 start = &#39;python main.py&#39;
 test = &#39;pytest -v&#39;
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">実行</span><a class="headerlink" href="#id14" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">実行</span><a class="headerlink" href="#id17" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv run start
 $ pipenv run <span class="nb">test</span>
 </pre></div>
@@ -152,22 +188,22 @@ $ pipenv run <span class="nb">test</span>
 </li>
 <li><p>仮想環境関連</p>
 <blockquote>
-<div><div class="literal-block-wrapper docutils container" id="id15">
-<div class="code-block-caption"><span class="caption-text">仮想環境のパス確認</span><a class="headerlink" href="#id15" title="このコードへのパーマリンク">¶</a></div>
+<div><div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">仮想環境のパス確認</span><a class="headerlink" href="#id18" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv --venv
 <span class="c1"># ~/.local/share/virtualenves/以下に作られる</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">仮想環境のパスを変える</span><a class="headerlink" href="#id16" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">仮想環境のパスを変える</span><a class="headerlink" href="#id19" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">WORKON_HOME</span><span class="o">=</span>~/venvs
 $ pipenv install package_name
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">プロジェクト毎に仮想環境を作る</span><a class="headerlink" href="#id17" title="このコードへのパーマリンク">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">プロジェクト毎に仮想環境を作る</span><a class="headerlink" href="#id20" title="このコードへのパーマリンク">¶</a></div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">PIPENV_VENV_IN_PROJECT</span><span class="o">=</span><span class="nb">true</span>
 $ pipenv install    <span class="c1"># カレントディレクトリに.venvが作成される</span>
 </pre></div>
@@ -177,8 +213,8 @@ $ pipenv install    <span class="c1"># カレントディレクトリに.venvが
 </li>
 </ol>
 </div>
-<div class="section" id="id2">
-<h2>使い方<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h2>使い方<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <ol class="arabic simple">
 <li><dl class="simple">
 <dt>バージョン管理対象</dt><dd><ol class="arabic simple">
@@ -194,10 +230,78 @@ $ pipenv install    <span class="c1"># カレントディレクトリに.venvが
 </li>
 </ol>
 </div>
-<div class="section" id="id3">
-<h2>トピック<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h2>トピック<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <ul class="simple">
 <li><p>Pipfile or setup.py</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>パッケージング<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul>
+<li><p><a class="reference external" href="https://engineer.recruit-lifestyle.co.jp/techblog/2019-12-25-python-packaging-specs/">パッケージングの歴史</a></p></li>
+<li><dl class="simple">
+<dt>パッケージング形式</dt><dd><ol class="arabic simple">
+<li><dl class="simple">
+<dt>bdist</dt><dd><p>PyPAにより、wheelが開発され、配布側はwheel形式にファイルをまとめ、利用者側はダウンロードして展開するだけ。
+ファイル形式としてのwheelと、それを作るライブラリとしてのwheelを混同しがちなので気をつける。</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>sdist (source distribution)</dt><dd><p>利用者側がsetup.pyを実行して、bdist形式のパッケージを作成して、インストールする形式</p>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>パッケージング方法</dt><dd><div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">bdist</span><a class="headerlink" href="#id21" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipenv install wheel
+$ python setup.py bdist_wheel
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">sdist</span><a class="headerlink" href="#id22" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytyon setup.py sdist
+</pre></div>
+</div>
+</div>
+<p>いずれにせよ、setup.pyは自身で作成する必要がある。</p>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">サンプル</span><a class="headerlink" href="#id23" title="このコードへのパーマリンク">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;requests&gt;=2.14.2&quot;</span><span class="p">]</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;your_package&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;0.1&#39;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Awesome library&#39;</span><span class="p">,</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://github.com/whatever/whatever&#39;</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="s1">&#39;yourname&#39;</span><span class="p">,</span>
+    <span class="n">author_email</span><span class="o">=</span><span class="s1">&#39;your@address.com&#39;</span><span class="p">,</span>
+    <span class="n">license</span><span class="o">=</span><span class="s1">&#39;MIT&#39;</span><span class="p">,</span>
+    <span class="n">keywords</span><span class="o">=</span><span class="s1">&#39;sample setuptools development&#39;</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;your_package&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;your_package.subpackage&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="n">requires</span><span class="p">,</span>
+    <span class="n">classifiers</span><span class="o">=</span><span class="p">[</span>
+        <span class="s1">&#39;Programming Language :: Python :: 3.6&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd>
+</dl>
+</li>
 </ul>
 </div>
 </div>

@@ -4,7 +4,21 @@
 Python基本実装集
 引数にskipとつける事で、その他スクリプトの実行をスキップする
 """
-from com.console import *
+import datetime
+import sys
+import time
+
+import itertools
+import random
+import traceback
+
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
+
+ARGV = sys.argv
+
 
 def execute():
     """Excample function with types documentted in the docstring.
@@ -17,14 +31,12 @@ def execute():
     Returns:
         bool: The return value. True for success, False otherwire
     """
-    import itertools, random, traceback
-    import sys, datetime, time
 
     log('+++++++++++++++++++ START +++++++++++++++++++')
     log('#============================')
     log('# 基本')
     log('#============================')
-    skip_other_script = True if len(sys.argv) == 2 and sys.argv[1] == 'skip' else False
+    skip_other_script = len(ARGV) == 2 and ARGV[1] == 'skip'
     log('SKIP OTHER SCRIPT', skip_other_script)
 
     # 変数
@@ -33,7 +45,8 @@ def execute():
     # 小文字始まり。スネークケース（hoge_fuga）
     num = 10
     string = "10"
-    sTring : string = "11" # 明示的に型宣言をしたい場合
+    # 明示的に型宣言をしたい場合
+    sTring : string = "11"
     null = None
 
     # 型変換 +++++++++++++++++++++++
@@ -45,11 +58,11 @@ def execute():
 
     # 型判定 +++++++++++++++++++++++
     log('＞型、インスタンス判定')
-    log('TYPE(int)', int == type(100))
-    log('TYPE(list)', list == type([1, 2, 3]))
-    log('TYPE(dist)', dict == type({'a' : 'b', '1' : '2'}))
-    log('TYPE(set)', set == type({1 ,2 ,3}))
-    log('TYPE(tuple)', tuple == type((1 ,2 ,3)))
+    log('TYPE(int)', type(100) == int)
+    log('TYPE(list)', type([1, 2, 3]) == list)
+    log('TYPE(dist)', type({'a': 'b', '1': '2'}) == dict)
+    log('TYPE(set)', type({1, 2, 3}) == set)
+    log('TYPE(tuple)', type((1, 2, 3)) == tuple)
 
     # いずれかに一致するか
     log('TYPE(MULTI)', type(100) in (str, float))
@@ -67,30 +80,29 @@ def execute():
     log("「" + input_str + "」" + str(len(input_str)) + "文字入力されました。")
     log_add_line()
 
-
     # Bool演算子／not演算子 +++++++++++++++++++++++
     # and/or、notを利用する
     # 0、空文字
     log("＞Bool演算子---------------")
-    if True and False :
+    if True and False:
         log("True and False")
     elif False or False:
         log("False or False")
-    elif not True :
+    elif not True:
         log("not True")
-    else :
+    else:
         log("and other")
     # 0、None、空文字などはFalse
     log("＞Bool値---------------")
-    if null :
+    if null:
         log("None")
-    elif 0 :
+    elif 0:
         log("0")
-    elif "" :
+    elif "":
         log("empty")
-    elif 1 :
+    elif 1:
         log("1")
-    else :
+    else:
         log("other")
     log_add_line()
 
@@ -101,7 +113,8 @@ def execute():
     now = datetime.datetime.now()
     formatted_now = now.strftime('%Y%m%d_%H%M%S')
     log('NOW', formatted_now)
-    log('NOW FORMAT', '{0}年{1}月{2}日 {3}時{4}分{5}秒'.format(now.year, now.month, now.day, now.hour, now.minute, now.second))
+    log('NOW FORMAT', '{0}年{1}月{2}日 {3}時{4}分{5}秒'.format(
+        now.year, now.month, now.day, now.hour, now.minute, now.second))
     # datetime.datetime.now()と同じ
     now2 = datetime.datetime.fromtimestamp(time.time())
     log('NOW2', now2.strftime('%Y%m%d_%H%M%S'))
@@ -130,7 +143,7 @@ def execute():
     log(now.strftime('%%'), '%%：%文字(ESCAPE)')
     log_add_line(1)
 
-    # 期間 
+    # 期間
     # timedeltaは日付計算時に利用する。
     # years,months,days,minitus,seconds,microseconds
     log(' -期間')
@@ -150,15 +163,15 @@ def execute():
     count = 0
     sum_all = 0
     sum_odd = 0
-    while count <= 100 :
-        if count > 10 :
+    while count <= 100:
+        if count > 10:
             break
-        sum_all = sum_all + count 
+        sum_all = sum_all + count
 
-        if count%2 == 0 :
+        if count % 2 == 0:
             count = count + 1
             continue
-        sum_odd = sum_odd + count 
+        sum_odd = sum_odd + count
         count = count + 1
     log("SUM", sum_all)
     log("ODD SUM", sum_odd)
@@ -167,13 +180,13 @@ def execute():
     log("＞ループ文；for---------------")
     # range()で繰り替えしを実行。
     # 引数は１〜３つまで指定可能。開始、終了、ステップ数
-    for i in range(3) :
+    for i in range(3):
         log("FOR COUNT", i)
     log_add_line(1)
-    for i in range(10, 13) :
+    for i in range(10, 13):
         log("FOR COUNT", i)
     log_add_line(1)
-    for i in range(100, 130, 10) :
+    for i in range(100, 130, 10):
         log("FOR COUNT", i)
     log_add_line(1)
 
@@ -194,18 +207,16 @@ def execute():
 
     # ネストループを１階層で記述したい場合
     for val, nest_val in itertools.product(range(3), range(10, 40, 10)):
-        log("FOR(PRODUCT)", 'VALUE : {0}, NEST_VALUE2 : {1}'.format(val, nest_val))
+        log("FOR(PRODUCT)", 'VALUE : {0}, NEST_VALUE2 : {1}'.format(
+            val, nest_val))
     log_add_line(1)
-
-
 
     # dictを利用したfor文
     # iteratorを３種類選択可能。keys,values,items
-    dict_for_sample = {'hoge' : '10', 'fuga' : '20', 'fage' : '30'}
-    for key  in dict_for_sample.keys() :
+    dict_for_sample = {'hoge': '10', 'fuga': '20', 'fage': '30'}
+    for key in dict_for_sample.keys():
         log('DICT CONTENT', 'KEY:' + key + ', VALUE:' + dict_for_sample[key])
     log_add_line()
-
 
     # import +++++++++++++++++++++++
     # import moduleName1, moduleName2, moduleName
@@ -222,11 +233,12 @@ def execute():
 
     # 例外処理
     log("＞例外処理 ---------------")
+
     # 割り算（サンプル関数）
-    def divide(arg1, arg2) :
+    def divide(arg1, arg2):
         result = None
         try:
-            result =  arg1 / arg2 
+            result = arg1 / arg2
         # except 例外 as 変数名: とし、発生した例外を利用することが可能
         # exceptを続けていくことで、複数のエラーハンドリングが可能
         except ZeroDivisionError as error:
@@ -249,13 +261,12 @@ def execute():
     log("10 / 0 = ", divide(10, 0))   # エアーメッセージが表示され、戻り値としてはNoneとなる
     log_add_line()
 
-
-    if skip_other_script == False:
+    if not skip_other_script:
         # コンテナ型  +++++++++++++++++++++++
         import basic.container
 
         # 関数  +++++++++++++++++++++++
-        import basic.function 
+        import basic.function
 
         # 文字列操作  +++++++++++++++++++++++
         import basic.str_operation
@@ -264,7 +275,7 @@ def execute():
         import basic.regex
 
         # ファイル操作  +++++++++++++++++++++++
-        import basic.file_operation 
+        import basic.file_operation
         basic.file_operation.main()
 
         import basic.file_control
@@ -278,10 +289,8 @@ def execute():
         # Shell
         import basic.shell
 
-
     # プログラム終了 +++++++++++++++++++++++
     log('+++++++++++++++++++ END +++++++++++++++++++')
     import sys
     sys.exit()
     log("ここにはたどり着かない")
-

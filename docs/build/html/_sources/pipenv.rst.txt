@@ -3,6 +3,32 @@
 pipenv
 ======================================
 
+概要
+---------------------------
+ライブラリの依存関係を扱うツール
+Pipfileというパッケージを管理するファイル
+Pipfile.lockという依存関係を管理するファイル
+で定義される
+
+
+#. その他競合ツール
+
+    * Poetry
+        パッケージングする際に記述していた、setup.pyやsetup.cfg、MANIFEST.inなども
+        １つのファイル（pyproject.toml）に記載することができる
+
+    * Pyflow
+        Pipenv/PoetryがPyenv＋venvで１つのPythonバージョン、仮想環境を管理するのに対して
+        単体で複数のPythonのバージョンを管理し、指定のバージョンで仮想環境を作ることが可能。
+        RUSTで実装されている、パフォーマンスや言語普及の観点から懸念あり。
+
+    * distutils, setuptools, pip
+        distutilsは標準パッケージに用意されたパッケージングツール
+        distutilsを拡張したsetuptools。人気を博した。PyPAにより開発された。
+        またPyPAにより、setuptoolsを拡張したpipが開発され、デファクトとなった。
+        
+
+
 設定
 ---------------------------
 #. Pipfile作成
@@ -11,6 +37,9 @@ pipenv
         :caption: パッケージインストール時に、Pipfileに情報を保存
 
         $ pipenv install requests  # pip installと完全に互換性あり
+
+    ただし.setup.pyを用意している場合、その中でimportしているライブラリを先にinstallしないとlock Faildでエラーとなる
+
 #. 実行
 
     .. code-block:: python
@@ -136,3 +165,55 @@ pipenv
 ---------------------------
 * Pipfile or setup.py
 
+
+パッケージング
+---------------------------
+* `パッケージングの歴史 <https://engineer.recruit-lifestyle.co.jp/techblog/2019-12-25-python-packaging-specs/>`_
+* パッケージング形式
+    #. bdist
+        PyPAにより、wheelが開発され、配布側はwheel形式にファイルをまとめ、利用者側はダウンロードして展開するだけ。
+        ファイル形式としてのwheelと、それを作るライブラリとしてのwheelを混同しがちなので気をつける。
+
+    #. sdist (source distribution)
+        利用者側がsetup.pyを実行して、bdist形式のパッケージを作成して、インストールする形式
+
+* パッケージング方法
+    .. code-block:: bash
+        :caption: bdist
+
+        $ pipenv install wheel
+        $ python setup.py bdist_wheel
+
+    .. code-block:: bash
+        :caption: sdist
+
+        $ pytyon setup.py sdist
+
+    
+    いずれにせよ、setup.pyは自身で作成する必要がある。  
+
+    .. code-block:: python
+        :caption: サンプル
+
+        from setuptools import setup
+
+        requires = ["requests>=2.14.2"]
+
+        setup(
+            name='your_package',
+            version='0.1',
+            description='Awesome library',
+            url='https://github.com/whatever/whatever',
+            author='yourname',
+            author_email='your@address.com',
+            license='MIT',
+            keywords='sample setuptools development',
+            packages=[
+                "your_package",
+                "your_package.subpackage",
+            ],
+            install_requires=requires,
+            classifiers=[
+                'Programming Language :: Python :: 3.6',
+            ],
+        )

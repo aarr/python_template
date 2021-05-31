@@ -5,9 +5,12 @@
 """ 正規表現
 正規表現サンプル集
 """
-
-from com.console import *
 import re
+
+import com.console
+
+log = com.console.log
+log_add_line = com.console.log_add_line
 
 log('#============================')
 log('# 正規表現')
@@ -55,7 +58,8 @@ My number is 090-1234-5678.
 Your number is 080-9876-4321.
 '''
 regex_ignore_single_flg = re.compile(r'm.|.Y', re.I)
-regex_ignore_multi_flg = re.compile(r'm.|.Y', re.I | re.S) # re.S(DOTALL)は「.」で改行も含める
+# re.S(DOTALL)は「.」で改行も含める
+regex_ignore_multi_flg = re.compile(r'm.|.Y', re.I | re.S) 
 regex_ignore_single_flg = re.compile(r'm.|.Y', re.I)
 log('SINGLE FLAS', regex_ignore_single_flg.sub(r'[CHANGE]', test_text))
 log('MULTI FLAG', regex_ignore_multi_flg.sub(r'[CHANGE]', test_text))
