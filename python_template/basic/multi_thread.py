@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''マルチスレッド'''
+"""マルチスレッド"""
 import datetime
 import time
 import threading
